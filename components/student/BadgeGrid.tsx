@@ -11,10 +11,11 @@ import {
   IconUsers,
   IconStar,
   IconMedal,
+  type Icon as TablerIcon,
 } from '@tabler/icons-react'
 import type { BadgeRow } from '@/types/database'
 
-const ICONS: Record<string, React.ComponentType<{ size?: number }>> = {
+const ICONS: Record<string, TablerIcon> = {
   'ti-brain': IconBrain,
   'ti-flame': IconFlame,
   'ti-trophy': IconTrophy,
