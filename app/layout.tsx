@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Space_Grotesk, JetBrains_Mono } from 'next/font/google'
 import './globals.css'
 
@@ -13,6 +13,12 @@ const jetbrainsMono = JetBrains_Mono({
   weight: ['400', '500'],
   variable: '--font-jetbrains-mono',
 })
+
+export const viewport: Viewport = {
+  themeColor: '#080D18',
+  width: 'device-width',
+  initialScale: 1,
+}
 
 export const metadata: Metadata = {
   title: 'PT Study — Mayo Clinic PT Students',
