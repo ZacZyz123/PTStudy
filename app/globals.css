@@ -1,0 +1,203 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg-base:          #080D18;   /* deepest navy — page background */
+  --bg-card:          #0F1829;   /* card background */
+  --bg-card-glass:    rgba(15, 24, 41, 0.7); /* glassmorphism card */
+  --bg-panel:         #0A1020;   /* sidebar + right panel */
+  --bg-input:         rgba(255,255,255,0.04);
+
+  --accent-sky:       #38BDF8;   /* primary — sky blue */
+  --accent-violet:    #7C3AED;   /* secondary — violet */
+  --accent-emerald:   #10B981;   /* success */
+  --accent-amber:     #F59E0B;   /* warning */
+  --accent-red:       #EF4444;   /* danger */
+  --accent-pink:      #EC4899;   /* badges + special */
+
+  --text-primary:     #F0F9FF;
+  --text-secondary:   #94A3B8;
+  --text-tertiary:    #3D5470;
+
+  --border:           rgba(56,189,248,0.12);
+  --border-hover:     rgba(56,189,248,0.35);
+  --border-glass:     rgba(255,255,255,0.08);
+
+  /* Glows */
+  --glow-sky:         0 0 30px rgba(56,189,248,0.25), 0 0 60px rgba(56,189,248,0.1);
+  --glow-violet:      0 0 30px rgba(124,58,237,0.25), 0 0 60px rgba(124,58,237,0.1);
+  --glow-emerald:     0 0 30px rgba(16,185,129,0.25);
+  --glow-amber:       0 0 30px rgba(245,158,11,0.25);
+  --glow-card:        0 8px 32px rgba(0,0,0,0.4), 0 0 0 1px rgba(56,189,248,0.08);
+  --glow-card-hover:  0 16px 48px rgba(0,0,0,0.6), 0 0 0 1px rgba(56,189,248,0.2), 0 0 40px rgba(56,189,248,0.1);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--bg-base);
+  color: var(--text-primary);
+  font-family: var(--font-space-grotesk), 'Space Grotesk', sans-serif;
+  min-height: 100vh;
+}
+
+.mono {
+  font-family: var(--font-jetbrains-mono), 'JetBrains Mono', monospace;
+}
+
+/* ---------- Glassmorphism card ---------- */
+.glass-card {
+  background: var(--bg-card-glass);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border-glass);
+  border-radius: 20px;
+  box-shadow: var(--glow-card);
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.glass-card:hover {
+  box-shadow: var(--glow-card-hover);
+  transform: translateY(-4px);
+  border-color: var(--border-hover);
+}
+.glass-card-static:hover {
+  transform: none;
+}
+
+/* ---------- Glass input ---------- */
+.glass-input {
+  background: var(--bg-input);
+  border: 1px solid var(--border-glass);
+  border-radius: 12px;
+  color: var(--text-primary);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.glass-input:focus {
+  outline: none;
+  border-color: var(--accent-sky);
+  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15), 0 0 20px rgba(56, 189, 248, 0.2);
+}
+
+/* ---------- Ripple effect (pure CSS) ---------- */
+.ripple {
+  position: relative;
+  overflow: hidden;
+}
+.ripple::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.45) 0%, transparent 65%);
+  opacity: 0;
+  transform: scale(0);
+  transition: transform 0.5s ease, opacity 0.6s ease;
+  pointer-events: none;
+}
+.ripple:active::after {
+  transform: scale(2.5);
+  opacity: 1;
+  transition: 0s;
+}
+
+/* ---------- Skeleton shimmer ---------- */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.04) 25%,
+    rgba(56, 189, 248, 0.1) 50%,
+    rgba(255, 255, 255, 0.04) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.8s linear infinite;
+  border-radius: 12px;
+}
+
+/* ---------- 3D flashcard flip ---------- */
+.flip-perspective {
+  perspective: 1000px;
+}
+.flip-preserve-3d {
+  transform-style: preserve-3d;
+}
+.flip-backface-hidden {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+.flip-rotate-180 {
+  transform: rotateY(180deg);
+}
+
+/* ---------- Scrollbar ---------- */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(56, 189, 248, 0.2);
+  border-radius: 8px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(56, 189, 248, 0.4);
+}
+
+/* ---------- Markdown prose (study guides / chat) ---------- */
+.prose-pt {
+  color: var(--text-primary);
+  line-height: 1.75;
+}
+.prose-pt h1,
+.prose-pt h2,
+.prose-pt h3,
+.prose-pt h4 {
+  color: var(--text-primary);
+  font-weight: 700;
+  margin-top: 1.75em;
+  margin-bottom: 0.6em;
+}
+.prose-pt h1 { font-size: 1.875rem; }
+.prose-pt h2 {
+  font-size: 1.5rem;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.4em;
+}
+.prose-pt h3 { font-size: 1.25rem; color: #38bdf8; }
+.prose-pt p { margin-bottom: 1em; color: var(--text-secondary); }
+.prose-pt strong { color: #38bdf8; font-weight: 600; }
+.prose-pt ul, .prose-pt ol { margin: 0.75em 0 1em 1.5em; color: var(--text-secondary); }
+.prose-pt ul { list-style: disc; }
+.prose-pt ol { list-style: decimal; }
+.prose-pt li { margin-bottom: 0.4em; }
+.prose-pt code {
+  font-family: var(--font-jetbrains-mono), monospace;
+  background: rgba(56, 189, 248, 0.1);
+  border-radius: 6px;
+  padding: 0.15em 0.4em;
+  font-size: 0.875em;
+  color: #38bdf8;
+}
+.prose-pt blockquote {
+  border-left: 3px solid var(--accent-sky);
+  padding-left: 1em;
+  margin: 1em 0;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+.prose-pt table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1em 0;
+}
+.prose-pt th, .prose-pt td {
+  border: 1px solid var(--border);
+  padding: 0.5em 0.75em;
+  text-align: left;
+}
+.prose-pt th { color: var(--text-primary); background: rgba(56, 189, 248, 0.06); }
+.prose-pt td { color: var(--text-secondary); }
