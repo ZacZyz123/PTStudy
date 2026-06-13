@@ -227,77 +227,82 @@ function Mouth({ mood }: { mood: FlexMood }) {
 }
 
 /* ---------- arms ---------- */
-function Arms({ mood }: { mood: FlexMood }) {
-  const armProps = { fill: SCRUBS, rx: 11 }
-  const handProps = { fill: SKIN }
+function Limb({ x1, y1, x2, y2 }: { x1: number; y1: number; x2: number; y2: number }) {
+  return <line x1={x1} y1={y1} x2={x2} y2={y2} stroke={SCRUBS} strokeWidth={18} strokeLinecap="round" />
+}
 
+function Hand({ cx, cy }: { cx: number; cy: number }) {
+  return <circle cx={cx} cy={cy} r={8.5} fill={SKIN} />
+}
+
+function Arms({ mood }: { mood: FlexMood }) {
   switch (mood) {
     case 'celebrating':
     case 'excited':
-      // both arms raised
+      // both arms raised in a V
       return (
         <g>
-          <rect x={38} y={92} width={22} height={48} transform="rotate(35 49 116)" {...armProps} />
-          <circle cx={36} cy={92} r={9} {...handProps} />
-          <rect x={140} y={92} width={22} height={48} transform="rotate(-35 151 116)" {...armProps} />
-          <circle cx={164} cy={92} r={9} {...handProps} />
+          <Limb x1={68} y1={124} x2={38} y2={88} />
+          <Hand cx={36} cy={84} />
+          <Limb x1={132} y1={124} x2={162} y2={88} />
+          <Hand cx={164} cy={84} />
         </g>
       )
     case 'thinking':
-      // right arm raised, finger near chin
+      // left arm down, right hand up near chin
       return (
         <g>
-          <rect x={42} y={128} width={20} height={46} rx={10} fill={SCRUBS} />
-          <circle cx={52} cy={178} r={8} {...handProps} />
-          <rect x={126} y={96} width={20} height={44} transform="rotate(-28 136 118)" {...armProps} />
-          <circle cx={120} cy={96} r={8} {...handProps} />
+          <Limb x1={66} y1={126} x2={52} y2={170} />
+          <Hand cx={51} cy={176} />
+          <Limb x1={134} y1={126} x2={122} y2={102} />
+          <Hand cx={120} cy={97} />
         </g>
       )
     case 'waving':
-      // right arm waving above head
+      // right arm waving above shoulder
       return (
         <g>
-          <rect x={42} y={128} width={20} height={46} rx={10} fill={SCRUBS} />
-          <circle cx={52} cy={178} r={8} {...handProps} />
+          <Limb x1={66} y1={126} x2={52} y2={170} />
+          <Hand cx={51} cy={176} />
           <motion.g
-            animate={{ rotate: [0, 22, 0, 22, 0] }}
+            animate={{ rotate: [0, 18, 0, 18, 0] }}
             transition={{ duration: 1.4, repeat: Infinity, ease: 'easeInOut' }}
-            style={{ originX: '140px', originY: '130px' }}
+            style={{ originX: '132px', originY: '122px' }}
           >
-            <rect x={138} y={84} width={20} height={50} transform="rotate(-30 148 109)" {...armProps} />
-            <circle cx={162} cy={82} r={9} {...handProps} />
+            <Limb x1={132} y1={122} x2={160} y2={88} />
+            <Hand cx={162} cy={83} />
           </motion.g>
         </g>
       )
     case 'surprised':
-      // both hands on cheeks
+      // both hands up to the cheeks
       return (
         <g>
-          <rect x={48} y={96} width={20} height={46} transform="rotate(28 58 119)" {...armProps} />
-          <circle cx={70} cy={92} r={9} {...handProps} />
-          <rect x={132} y={96} width={20} height={46} transform="rotate(-28 142 119)" {...armProps} />
-          <circle cx={130} cy={92} r={9} {...handProps} />
+          <Limb x1={68} y1={124} x2={70} y2={100} />
+          <Hand cx={70} cy={95} />
+          <Limb x1={132} y1={124} x2={130} y2={100} />
+          <Hand cx={130} cy={95} />
         </g>
       )
     case 'sad':
       // arms hang straight down
       return (
         <g>
-          <rect x={46} y={130} width={20} height={50} rx={10} fill={SCRUBS} />
-          <circle cx={56} cy={184} r={8} {...handProps} />
-          <rect x={134} y={130} width={20} height={50} rx={10} fill={SCRUBS} />
-          <circle cx={144} cy={184} r={8} {...handProps} />
+          <Limb x1={64} y1={128} x2={58} y2={176} />
+          <Hand cx={57} cy={182} />
+          <Limb x1={136} y1={128} x2={142} y2={176} />
+          <Hand cx={143} cy={182} />
         </g>
       )
     case 'focused':
     default:
-      // relaxed at sides
+      // relaxed at the sides
       return (
         <g>
-          <rect x={44} y={124} width={20} height={48} rx={10} transform="rotate(12 54 148)" fill={SCRUBS} />
-          <circle cx={48} cy={176} r={8} {...handProps} />
-          <rect x={136} y={124} width={20} height={48} rx={10} transform="rotate(-12 146 148)" fill={SCRUBS} />
-          <circle cx={152} cy={176} r={8} {...handProps} />
+          <Limb x1={64} y1={126} x2={50} y2={168} />
+          <Hand cx={49} cy={174} />
+          <Limb x1={136} y1={126} x2={150} y2={168} />
+          <Hand cx={151} cy={174} />
         </g>
       )
   }
@@ -379,11 +384,11 @@ export default function Flex({
       <AnimatePresence>
         {speechBubble && (
           <motion.div
-            initial={{ opacity: 0, y: 8, scale: 0.9 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 8, scale: 0.9 }}
+            initial={{ opacity: 0, y: 8, scale: 0.9, x: '-50%' }}
+            animate={{ opacity: 1, y: 0, scale: 1, x: '-50%' }}
+            exit={{ opacity: 0, y: 8, scale: 0.9, x: '-50%' }}
             transition={{ type: 'spring', stiffness: 350, damping: 22 }}
-            className="absolute bottom-full left-1/2 z-10 mb-2 w-max max-w-[220px] -translate-x-1/2 rounded-2xl bg-white px-4 py-2.5 text-center text-sm font-semibold text-slate-800"
+            className="absolute bottom-full left-1/2 z-10 mb-2 w-max max-w-[min(220px,68vw)] rounded-2xl bg-white px-4 py-2.5 text-center text-sm font-semibold text-slate-800"
             style={{ filter: 'drop-shadow(0 4px 12px rgba(56,189,248,0.3))' }}
           >
             {speechBubble}

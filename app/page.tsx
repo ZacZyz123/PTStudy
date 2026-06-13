@@ -165,7 +165,7 @@ export default function LandingPage() {
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ type: 'spring', stiffness: 160, damping: 18, delay: 0.35 }}
-            className="flex justify-center"
+            className="mt-14 flex justify-center lg:mt-0"
           >
             <div className="animate-float">
               <Flex mood="excited" size={260} speechBubble="Welcome! I'm Flex, your study buddy!" />
