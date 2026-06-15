@@ -12,9 +12,9 @@ export function getAnthropic(): Anthropic {
   if (!anthropicClient) {
     anthropicClient = new Anthropic({
       apiKey: process.env.ANTHROPIC_API_KEY,
-      // SDK-level retries (exponential backoff + jitter) for transient errors,
-      // including 429 rate limits and 529 "Overloaded".
-      maxRetries: MAX_RETRIES,
+      // We drive retries explicitly per call (see completeWithRetry / the request
+      // options below), so keep the client default low to avoid compounding waits.
+      maxRetries: 2,
       timeout: 120_000,
     })
   }
@@ -37,6 +37,10 @@ export function isOverloadError(err: unknown): boolean {
  * Run a streaming completion and return its text, retrying the whole call on
  * overload/rate-limit/5xx errors (these can also occur mid-stream, which the
  * SDK's per-request retry does not cover). Uses exponential backoff + jitter.
+ *
+ * The SDK's own retry is disabled per request (maxRetries: 0) so this loop is
+ * the single source of retries — preventing nested backoffs from blowing past
+ * the serverless function's time limit and turning an overload into a timeout.
  */
 export async function completeWithRetry(
   params: Anthropic.MessageStreamParams,
@@ -45,7 +49,7 @@ export async function completeWithRetry(
   let attempt = 0
   for (;;) {
     try {
-      const stream = getAnthropic().messages.stream(params)
+      const stream = getAnthropic().messages.stream(params, { maxRetries: 0 })
       const message = await stream.finalMessage()
       return message.content
         .filter((block) => block.type === 'text')

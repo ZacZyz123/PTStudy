@@ -80,15 +80,30 @@ export default function FileUpload() {
         ['quiz', 'generating-quiz'],
       ] as const) {
         setStage(nextStage)
-        const genRes = await fetch(`/api/generate/${contentId}`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ kinds: [kind] }),
-        })
-        if (!genRes.ok) {
-          const genData: { error?: string } = await genRes.json()
-          throw new Error(genData.error ?? `Failed generating ${kind}`)
+        // Retry this step a few times if Flex (Claude) is overloaded (503),
+        // so a transient spike doesn't discard the whole upload.
+        let lastError = `Failed generating ${kind}`
+        let ok = false
+        for (let attempt = 1; attempt <= 4; attempt++) {
+          const genRes = await fetch(`/api/generate/${contentId}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ kinds: [kind] }),
+          })
+          if (genRes.ok) {
+            ok = true
+            break
+          }
+          const genData: { error?: string } = await genRes.json().catch(() => ({}))
+          lastError = genData.error ?? lastError
+          if (genRes.status === 503 && attempt < 4) {
+            toast('Flex is busy right now — retrying…', 'info')
+            await new Promise((r) => setTimeout(r, attempt * 3000))
+            continue
+          }
+          break
         }
+        if (!ok) throw new Error(lastError)
       }
 
       setStage('done')
