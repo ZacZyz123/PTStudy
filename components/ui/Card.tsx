@@ -15,20 +15,27 @@ interface CardProps {
  * cursor like a physical object being picked up.
  */
 export default function Card({ children, className = '', onClick, tilt = true }: CardProps) {
-  const { rotateX, rotateY, handleMouseMove, handleMouseLeave } = use3DTilt()
+  const { rotateX, rotateY, glareBackground, handleMouseMove, handleMouseLeave } = use3DTilt()
 
   return (
     <motion.div
-      style={tilt ? { rotateX, rotateY, transformPerspective: 1000 } : undefined}
+      style={
+        tilt
+          ? { rotateX, rotateY, transformPerspective: 1000, transformStyle: 'preserve-3d' }
+          : undefined
+      }
       onMouseMove={tilt ? handleMouseMove : undefined}
       onMouseLeave={tilt ? handleMouseLeave : undefined}
       onClick={onClick}
       whileHover={{ y: -4 }}
-      className={`rounded-[20px] border border-glass bg-bg-card shadow-glow-card
+      className={`relative rounded-[20px] border border-glass bg-bg-card shadow-glow-card
         transition-[box-shadow,border-color] duration-300 hover:border-hover hover:shadow-glow-card-hover
-        ${onClick ? 'cursor-pointer' : ''} ${className}`}
+        ${tilt ? 'tilt-card' : ''} ${onClick ? 'cursor-pointer' : ''} ${className}`}
     >
-      {children}
+      {tilt && (
+        <motion.span aria-hidden className="tilt-glare" style={{ background: glareBackground }} />
+      )}
+      {tilt ? <div style={{ transform: 'translateZ(35px)', transformStyle: 'preserve-3d' }}>{children}</div> : children}
     </motion.div>
   )
 }

@@ -73,6 +73,24 @@ const config: Config = {
           '20%': { opacity: '1' },
           '100%': { transform: 'translateY(-24px) scale(1.4)', opacity: '0' },
         },
+        'aurora-1': {
+          '0%, 100%': { transform: 'translate(0, 0) scale(1)' },
+          '33%': { transform: 'translate(8%, -6%) scale(1.15)' },
+          '66%': { transform: 'translate(-6%, 8%) scale(0.92)' },
+        },
+        'aurora-2': {
+          '0%, 100%': { transform: 'translate(0, 0) scale(1)' },
+          '33%': { transform: 'translate(-10%, 6%) scale(0.9)' },
+          '66%': { transform: 'translate(7%, -8%) scale(1.18)' },
+        },
+        'gradient-pan': {
+          '0%, 100%': { backgroundPosition: '0% 50%' },
+          '50%': { backgroundPosition: '100% 50%' },
+        },
+        'border-glow': {
+          '0%, 100%': { opacity: '0.35' },
+          '50%': { opacity: '0.9' },
+        },
       },
       animation: {
         shimmer: 'shimmer 1.8s linear infinite',
@@ -82,6 +100,14 @@ const config: Config = {
         'pulse-glow': 'pulse-glow 1.2s ease-in-out',
         'spin-once': 'spin-once 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)',
         'float-z': 'float-z 2s ease-out infinite',
+        'aurora-1': 'aurora-1 22s ease-in-out infinite',
+        'aurora-2': 'aurora-2 28s ease-in-out infinite',
+        'gradient-pan': 'gradient-pan 6s ease infinite',
+        'border-glow': 'border-glow 3s ease-in-out infinite',
+      },
+      transitionTimingFunction: {
+        expo: 'cubic-bezier(0.16, 1, 0.3, 1)',
+        spring: 'cubic-bezier(0.34, 1.56, 0.64, 1)',
       },
     },
   },

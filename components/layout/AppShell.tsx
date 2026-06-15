@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import Sidebar from './Sidebar'
 import MobileNav from './MobileNav'
 import RightPanel from './RightPanel'
+import AuroraBackground from '@/components/ui/AuroraBackground'
 import FlexCorner from '@/components/mascot/FlexCorner'
 import { FlexProvider } from '@/components/mascot/FlexContext'
 import { ToastProvider } from '@/components/ui/Toast'
@@ -27,16 +28,17 @@ export default function AppShell({ profile, children }: AppShellProps) {
     <FlexProvider>
       <ToastProvider>
         <div className="min-h-screen">
+          <AuroraBackground />
           <Sidebar profile={profile} />
 
           <main className="min-h-screen pb-24 lg:ml-[220px] lg:pb-8 xl:mr-[300px]">
             <AnimatePresence mode="wait">
               <motion.div
                 key={pathname}
-                initial={{ opacity: 0, x: 32 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -32 }}
-                transition={{ duration: 0.28, ease: 'easeOut' }}
+                initial={{ opacity: 0, x: 32, filter: 'blur(6px)' }}
+                animate={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
+                exit={{ opacity: 0, x: -32, filter: 'blur(6px)' }}
+                transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
                 className="mx-auto w-full max-w-3xl px-4 py-6 sm:px-6 lg:py-8"
               >
                 {children}
