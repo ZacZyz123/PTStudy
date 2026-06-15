@@ -2,15 +2,64 @@ import Anthropic from '@anthropic-ai/sdk'
 
 export const CLAUDE_MODEL = 'claude-sonnet-4-6'
 
+/** How many times to retry a call when the API is overloaded/rate-limited. */
+const MAX_RETRIES = 4
+
 let anthropicClient: Anthropic | null = null
 
 /** Server-side Anthropic client (lazy so builds don't require the key). */
 export function getAnthropic(): Anthropic {
   if (!anthropicClient) {
-    anthropicClient = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
+    anthropicClient = new Anthropic({
+      apiKey: process.env.ANTHROPIC_API_KEY,
+      // SDK-level retries (exponential backoff + jitter) for transient errors,
+      // including 429 rate limits and 529 "Overloaded".
+      maxRetries: MAX_RETRIES,
+      timeout: 120_000,
+    })
   }
   return anthropicClient
 }
+
+/** True for transient errors worth retrying: overloaded, rate-limited, 5xx, or network. */
+export function isOverloadError(err: unknown): boolean {
+  if (err instanceof Anthropic.APIError) {
+    const status = err.status
+    return status === 429 || status === 529 || (typeof status === 'number' && status >= 500)
+  }
+  return (
+    err instanceof Anthropic.APIConnectionError ||
+    err instanceof Anthropic.APIConnectionTimeoutError
+  )
+}
+
+/**
+ * Run a streaming completion and return its text, retrying the whole call on
+ * overload/rate-limit/5xx errors (these can also occur mid-stream, which the
+ * SDK's per-request retry does not cover). Uses exponential backoff + jitter.
+ */
+export async function completeWithRetry(
+  params: Anthropic.MessageStreamParams,
+  maxRetries = MAX_RETRIES
+): Promise<string> {
+  let attempt = 0
+  for (;;) {
+    try {
+      const stream = getAnthropic().messages.stream(params)
+      const message = await stream.finalMessage()
+      return message.content
+        .filter((block) => block.type === 'text')
+        .map((block) => (block as { text: string }).text)
+        .join('')
+    } catch (err) {
+      attempt += 1
+      if (attempt > maxRetries || !isOverloadError(err)) throw err
+      const backoff = Math.min(1000 * 2 ** (attempt - 1), 16_000) + Math.random() * 400
+      await new Promise((resolve) => setTimeout(resolve, backoff))
+    }
+  }
+}
+
 
 /* ---------- prompt builders ---------- */
 

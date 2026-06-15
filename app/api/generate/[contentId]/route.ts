@@ -1,7 +1,8 @@
 import { NextResponse } from 'next/server'
 import {
-  getAnthropic,
   CLAUDE_MODEL,
+  completeWithRetry,
+  isOverloadError,
   studyGuidePrompt,
   flashcardsPrompt,
   quizPrompt,
@@ -41,17 +42,12 @@ async function requireAdmin(): Promise<boolean> {
   return profile?.role === 'admin'
 }
 
-async function complete(prompt: string): Promise<string> {
-  const stream = getAnthropic().messages.stream({
+function complete(prompt: string): Promise<string> {
+  return completeWithRetry({
     model: CLAUDE_MODEL,
     max_tokens: 16000,
     messages: [{ role: 'user', content: prompt }],
   })
-  const message = await stream.finalMessage()
-  return message.content
-    .filter((block): block is { type: 'text'; text: string; citations: null } => block.type === 'text')
-    .map((block) => block.text)
-    .join('')
 }
 
 /**
@@ -127,6 +123,12 @@ export async function POST(request: Request, { params }: { params: { contentId: 
     return NextResponse.json({ results })
   } catch (err) {
     console.error('Generation error:', err)
+    if (isOverloadError(err)) {
+      return NextResponse.json(
+        { error: 'Flex is overloaded right now — please try again in a moment.', results },
+        { status: 503 }
+      )
+    }
     const message = err instanceof Error ? err.message : 'Generation failed'
     return NextResponse.json({ error: message, results }, { status: 500 })
   }
