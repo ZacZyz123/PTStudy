@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { motion } from 'framer-motion'
+import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
 import {
   IconBolt,
   IconBook,
@@ -18,6 +18,8 @@ import Flex from '@/components/mascot/Flex'
 import ParticleBackground from '@/components/ui/ParticleBackground'
 import GlassCard from '@/components/ui/GlassCard'
 import Button from '@/components/ui/Button'
+import ScrollProgress from '@/components/ui/ScrollProgress'
+import CountUp from '@/components/ui/CountUp'
 
 const FEATURES = [
   {
@@ -75,8 +77,30 @@ const fadeUp = {
 }
 
 export default function LandingPage() {
+  // mouse parallax for the hero — Flex + light blobs drift with the cursor
+  const mx = useMotionValue(0)
+  const my = useMotionValue(0)
+  const sx = useSpring(mx, { stiffness: 60, damping: 18 })
+  const sy = useSpring(my, { stiffness: 60, damping: 18 })
+
+  const flexX = useTransform(sx, [-0.5, 0.5], [-26, 26])
+  const flexY = useTransform(sy, [-0.5, 0.5], [-20, 20])
+  const flexRotateY = useTransform(sx, [-0.5, 0.5], [-12, 12])
+  const flexRotateX = useTransform(sy, [-0.5, 0.5], [10, -10])
+  const blobAX = useTransform(sx, [-0.5, 0.5], [40, -40])
+  const blobAY = useTransform(sy, [-0.5, 0.5], [30, -30])
+  const blobBX = useTransform(sx, [-0.5, 0.5], [-50, 50])
+  const blobBY = useTransform(sy, [-0.5, 0.5], [-36, 36])
+
+  const handleHeroMove = (e: React.MouseEvent<HTMLElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect()
+    mx.set((e.clientX - rect.left) / rect.width - 0.5)
+    my.set((e.clientY - rect.top) / rect.height - 0.5)
+  }
+
   return (
     <main className="relative overflow-hidden">
+      <ScrollProgress />
       {/* Nav */}
       <nav className="fixed inset-x-0 top-0 z-50 border-b border-glass bg-bg-base/70 backdrop-blur-xl">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-3.5">
@@ -98,11 +122,20 @@ export default function LandingPage() {
       </nav>
 
       {/* Hero */}
-      <section className="relative flex min-h-screen items-center justify-center px-5 pt-20">
+      <section
+        onMouseMove={handleHeroMove}
+        className="relative flex min-h-screen items-center justify-center px-5 pt-20"
+      >
         <ParticleBackground />
-        {/* ambient glow blobs */}
-        <div className="pointer-events-none absolute -left-40 top-20 h-96 w-96 rounded-full bg-accent-sky/10 blur-[120px]" />
-        <div className="pointer-events-none absolute -right-40 bottom-20 h-96 w-96 rounded-full bg-accent-violet/10 blur-[120px]" />
+        {/* ambient glow blobs — drift with the cursor */}
+        <motion.div
+          style={{ x: blobAX, y: blobAY }}
+          className="pointer-events-none absolute -left-40 top-20 h-96 w-96 rounded-full bg-accent-sky/10 blur-[120px]"
+        />
+        <motion.div
+          style={{ x: blobBX, y: blobBY }}
+          className="pointer-events-none absolute -right-40 bottom-20 h-96 w-96 rounded-full bg-accent-violet/10 blur-[120px]"
+        />
 
         <div className="mx-auto grid max-w-6xl items-center gap-10 lg:grid-cols-[1.2fr_1fr]">
           <div className="text-center lg:text-left">
@@ -124,9 +157,7 @@ export default function LandingPage() {
             >
               PT school is brutal.
               <br />
-              <span className="bg-gradient-to-r from-accent-sky via-accent-violet to-accent-pink bg-clip-text text-transparent">
-                Studying shouldn&apos;t be.
-              </span>
+              <span className="text-gradient">Studying shouldn&apos;t be.</span>
             </motion.h1>
 
             <motion.p
@@ -159,6 +190,27 @@ export default function LandingPage() {
                 See what&apos;s inside ↓
               </a>
             </motion.div>
+
+            {/* social-proof stats band */}
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.45 }}
+              className="mt-10 grid max-w-md grid-cols-3 gap-4 lg:mx-0"
+            >
+              {[
+                { to: 60, suffix: 's', label: 'lecture → study kit' },
+                { to: 15, suffix: '', label: 'flashcards per lecture' },
+                { to: 100, suffix: ' XP', label: 'per challenge win' },
+              ].map((s) => (
+                <div key={s.label} className="text-center lg:text-left">
+                  <p className="mono text-2xl font-bold text-accent-sky sm:text-3xl">
+                    <CountUp to={s.to} suffix={s.suffix} />
+                  </p>
+                  <p className="mt-0.5 text-xs text-text-secondary">{s.label}</p>
+                </div>
+              ))}
+            </motion.div>
           </div>
 
           <motion.div
@@ -166,10 +218,20 @@ export default function LandingPage() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ type: 'spring', stiffness: 160, damping: 18, delay: 0.35 }}
             className="mt-14 flex justify-center lg:mt-0"
+            style={{ perspective: 1000 }}
           >
-            <div className="animate-float">
-              <Flex mood="excited" size={260} speechBubble="Welcome! I'm Flex, your study buddy!" />
-            </div>
+            <motion.div
+              style={{ x: flexX, y: flexY, rotateX: flexRotateX, rotateY: flexRotateY, transformStyle: 'preserve-3d' }}
+              className="relative"
+            >
+              {/* glowing pedestal halo */}
+              <div className="pointer-events-none absolute left-1/2 top-1/2 h-72 w-72 -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent-sky/20 blur-[80px]" />
+              <div className="animate-float">
+                <Flex mood="excited" size={260} speechBubble="Welcome! I'm Flex, your study buddy!" />
+              </div>
+              {/* reflective floor disc */}
+              <div className="pointer-events-none mx-auto -mt-2 h-6 w-44 rounded-[100%] bg-accent-sky/25 blur-md" />
+            </motion.div>
           </motion.div>
         </div>
       </section>

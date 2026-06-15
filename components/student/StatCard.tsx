@@ -20,6 +20,14 @@ const colorClasses = {
   pink: 'text-accent-pink bg-accent-pink/10',
 }
 
+const accentBar = {
+  sky: 'from-accent-sky/0 via-accent-sky to-accent-sky/0',
+  violet: 'from-accent-violet/0 via-accent-violet to-accent-violet/0',
+  emerald: 'from-accent-emerald/0 via-accent-emerald to-accent-emerald/0',
+  amber: 'from-accent-amber/0 via-accent-amber to-accent-amber/0',
+  pink: 'from-accent-pink/0 via-accent-pink to-accent-pink/0',
+}
+
 /** Stat card — the number counts up from 0 when it first scrolls into view. */
 export default function StatCard({ label, value, suffix = '', icon, color = 'sky' }: StatCardProps) {
   const ref = useRef<HTMLDivElement>(null)
@@ -44,7 +52,12 @@ export default function StatCard({ label, value, suffix = '', icon, color = 'sky
 
   return (
     <div ref={ref}>
-      <GlassCard className="animate-pulse-glow p-5" tilt>
+      <GlassCard className="animate-pulse-glow overflow-hidden p-5" tilt>
+        {/* top accent gradient line */}
+        <span
+          aria-hidden
+          className={`absolute inset-x-5 top-0 h-px bg-gradient-to-r ${accentBar[color]}`}
+        />
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={inView ? { opacity: 1, y: 0 } : undefined}
