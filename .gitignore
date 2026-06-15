@@ -33,3 +33,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# generated preview renders (scripts/render-*.mjs)
+*-preview.png
+*-preview.svg
