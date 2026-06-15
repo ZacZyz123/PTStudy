@@ -171,7 +171,7 @@ export function flexSVG(mood, uid = '0') {
   <path d="M118 118 Q128 150 104 170" stroke="${STETHO}" stroke-width="4.5" fill="none" stroke-linecap="round"/>
   <circle cx="100" cy="174" r="7" fill="${STETHO}"/><circle cx="100" cy="174" r="3.5" fill="#0A1525"/>
 
-  <text x="128" y="176" text-anchor="middle" font-size="7.5" font-weight="bold" fill="${SKY}" font-family="sans-serif">DPT Flex</text>
+  <text x="128" y="170" text-anchor="middle" font-size="7.5" font-weight="bold" fill="${SKY}" font-family="sans-serif">DPT Flex</text>
 
   ${arms(mood, ag, sd)}
 

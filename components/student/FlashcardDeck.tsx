@@ -1,26 +1,44 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { IconCheck, IconRotateClockwise, IconRefresh } from '@tabler/icons-react'
+import { IconCheck, IconRotateClockwise, IconRefresh, IconBolt } from '@tabler/icons-react'
 import FlashCard from './FlashCard'
 import Flex from '@/components/mascot/Flex'
 import Button from '@/components/ui/Button'
+import { XP_REWARDS } from '@/lib/xp'
 import type { Flashcard } from '@/types/database'
 
 interface FlashcardDeckProps {
   cards: Flashcard[]
+  contentId: string
 }
 
-export default function FlashcardDeck({ cards: initialCards }: FlashcardDeckProps) {
+export default function FlashcardDeck({ cards: initialCards, contentId }: FlashcardDeckProps) {
   const [queue, setQueue] = useState<Flashcard[]>(initialCards)
   const [knownCount, setKnownCount] = useState(0)
   const [flipped, setFlipped] = useState(false)
   const [direction, setDirection] = useState(1)
+  const [awardedXp, setAwardedXp] = useState<number | null>(null)
+  const awardRequested = useRef(false)
 
   const total = initialCards.length
   const current = queue[0]
   const done = !current
+
+  // Award flashcard XP once when the whole deck is first completed.
+  useEffect(() => {
+    if (!done || total === 0 || awardRequested.current) return
+    awardRequested.current = true
+    fetch('/api/xp/award', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'flashcard_deck', contentId }),
+    })
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => setAwardedXp(d ? (d.awarded ?? 0) : 0))
+      .catch(() => setAwardedXp(0))
+  }, [done, total, contentId])
 
   const advance = (known: boolean) => {
     setDirection(known ? 1 : -1)
@@ -49,10 +67,25 @@ export default function FlashcardDeck({ cards: initialCards }: FlashcardDeckProp
         transition={{ type: 'spring', stiffness: 240, damping: 20 }}
         className="flex flex-col items-center gap-5 py-10 text-center"
       >
-        <Flex mood="celebrating" size={140} speechBubble="Deck complete! You're a machine! 🎉" />
+        <Flex mood="celebrating" size={140} />
         <h2 className="text-2xl font-bold text-accent-emerald">
           All {total} cards mastered!
         </h2>
+        {awardedXp !== null &&
+          (awardedXp > 0 ? (
+            <motion.span
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ type: 'spring', stiffness: 320, damping: 18 }}
+              className="inline-flex items-center gap-1.5 rounded-full bg-accent-amber/15 px-4 py-1.5 text-sm font-bold text-accent-amber shadow-glow-amber"
+            >
+              <IconBolt size={16} />+{awardedXp} XP earned
+            </motion.span>
+          ) : (
+            <span className="text-sm text-text-secondary">
+              Already earned today — great review! (+{XP_REWARDS.FLASHCARD_DECK} XP daily)
+            </span>
+          ))}
         <Button onClick={restart}>
           <IconRefresh size={18} />
           Run it back

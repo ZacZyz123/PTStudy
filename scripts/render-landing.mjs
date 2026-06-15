@@ -21,10 +21,23 @@ let svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" vi
   <radialGradient id="b1" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="${P.sky}" stop-opacity="0.16"/><stop offset="100%" stop-color="${P.sky}" stop-opacity="0"/></radialGradient>
   <radialGradient id="b2" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="${P.indigo}" stop-opacity="0.16"/><stop offset="100%" stop-color="${P.indigo}" stop-opacity="0"/></radialGradient>
   <radialGradient id="ped" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="${P.sky}" stop-opacity="0.28"/><stop offset="100%" stop-color="${P.sky}" stop-opacity="0"/></radialGradient>
+  <linearGradient id="fade" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#05070C" stop-opacity="0"/><stop offset="100%" stop-color="#05070C" stop-opacity="1"/></linearGradient>
 </defs>
-<rect width="${W}" height="${H}" fill="${P.base}"/>
-<ellipse cx="160" cy="240" rx="420" ry="360" fill="url(#b1)"/>
-<ellipse cx="${W - 120}" cy="${H - 120}" rx="460" ry="380" fill="url(#b2)"/>
+<rect width="${W}" height="${H}" fill="#05070C"/>
+<!-- cinematic video backdrop (representation of the looping hero video) -->
+<rect x="0" y="0" width="${W}" height="620" fill="#0A0F1C"/>
+<ellipse cx="420" cy="180" rx="320" ry="260" fill="url(#b1)"/>
+<ellipse cx="1050" cy="320" rx="380" ry="300" fill="url(#b2)"/>
+<g opacity="0.5">
+  <circle cx="300" cy="120" r="60" fill="${P.sky}" opacity="0.05"/>
+  <circle cx="700" cy="90" r="40" fill="${P.periwinkle}" opacity="0.06"/>
+  <circle cx="1180" cy="160" r="80" fill="${P.indigo}" opacity="0.05"/>
+  <circle cx="540" cy="430" r="50" fill="${P.sky}" opacity="0.04"/>
+  <circle cx="980" cy="500" r="70" fill="${P.indigo}" opacity="0.04"/>
+</g>
+<!-- cinematic overlays: darken + bottom fade into the page -->
+<rect x="0" y="0" width="${W}" height="620" fill="#05070C" opacity="0.45"/>
+<rect x="0" y="380" width="${W}" height="240" fill="url(#fade)"/>
 <rect x="0" y="0" width="${W}" height="2" fill="url(#grad)"/>`
 
 // nav
@@ -57,9 +70,6 @@ stats.forEach((s, i) => {
 svg += `<ellipse cx="1080" cy="375" rx="220" ry="220" fill="url(#ped)"/>`
 svg += `<svg x="905" y="150" width="350" height="420" viewBox="0 0 200 240">${flexSVG('excited', 'hero')}</svg>`
 svg += `<ellipse cx="1080" cy="585" rx="120" ry="16" fill="${P.sky}" opacity="0.18"/>`
-// speech bubble
-svg += `<rect x="975" y="148" width="252" height="50" rx="16" fill="#fff"/><polygon points="1090,196 1106,196 1098,210" fill="#fff"/>`
-svg += T(1101, 178, "Welcome! I'm Flex, your study buddy!", { size: 13, w: 600, fill: '#1e293b', anchor: 'middle' })
 
 // feature cards strip
 const feats = [

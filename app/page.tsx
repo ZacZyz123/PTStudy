@@ -15,7 +15,6 @@ import {
   IconSparkles,
 } from '@tabler/icons-react'
 import Flex from '@/components/mascot/Flex'
-import ParticleBackground from '@/components/ui/ParticleBackground'
 import GlassCard from '@/components/ui/GlassCard'
 import Button from '@/components/ui/Button'
 import ScrollProgress from '@/components/ui/ScrollProgress'
@@ -87,10 +86,6 @@ export default function LandingPage() {
   const flexY = useTransform(sy, [-0.5, 0.5], [-20, 20])
   const flexRotateY = useTransform(sx, [-0.5, 0.5], [-12, 12])
   const flexRotateX = useTransform(sy, [-0.5, 0.5], [10, -10])
-  const blobAX = useTransform(sx, [-0.5, 0.5], [40, -40])
-  const blobAY = useTransform(sy, [-0.5, 0.5], [30, -30])
-  const blobBX = useTransform(sx, [-0.5, 0.5], [-50, 50])
-  const blobBY = useTransform(sy, [-0.5, 0.5], [-36, 36])
 
   const handleHeroMove = (e: React.MouseEvent<HTMLElement>) => {
     const rect = e.currentTarget.getBoundingClientRect()
@@ -121,23 +116,33 @@ export default function LandingPage() {
         </div>
       </nav>
 
-      {/* Hero */}
+      {/* Hero — cinematic full-screen video */}
       <section
         onMouseMove={handleHeroMove}
-        className="relative flex min-h-screen items-center justify-center px-5 pt-20"
+        className="relative flex min-h-screen items-center justify-center overflow-hidden px-5 pt-20"
       >
-        <ParticleBackground />
-        {/* ambient glow blobs — drift with the cursor */}
-        <motion.div
-          style={{ x: blobAX, y: blobAY }}
-          className="pointer-events-none absolute -left-40 top-20 h-96 w-96 rounded-full bg-accent-sky/10 blur-[120px]"
-        />
-        <motion.div
-          style={{ x: blobBX, y: blobBY }}
-          className="pointer-events-none absolute -right-40 bottom-20 h-96 w-96 rounded-full bg-accent-violet/10 blur-[120px]"
+        {/* background video */}
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="absolute inset-0 z-0 h-full w-full object-cover"
+        >
+          <source
+            src="https://res.cloudinary.com/dfonotyfb/video/upload/v1775585556/dds3_1_rqhg7x.mp4"
+            type="video/mp4"
+          />
+        </video>
+        {/* cinematic overlays: darken for legibility + vignette + bottom fade into the page */}
+        <div className="pointer-events-none absolute inset-0 z-0 bg-bg-base/55" />
+        <div className="pointer-events-none absolute inset-0 z-0 bg-gradient-to-b from-bg-base/80 via-bg-base/30 to-bg-base" />
+        <div
+          className="pointer-events-none absolute inset-0 z-0"
+          style={{ background: 'radial-gradient(120% 80% at 50% 40%, transparent 40%, rgba(12,19,34,0.85) 100%)' }}
         />
 
-        <div className="mx-auto grid max-w-6xl items-center gap-10 lg:grid-cols-[1.2fr_1fr]">
+        <div className="relative z-10 mx-auto grid max-w-6xl items-center gap-10 lg:grid-cols-[1.2fr_1fr]">
           <div className="text-center lg:text-left">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -227,7 +232,7 @@ export default function LandingPage() {
               {/* glowing pedestal halo */}
               <div className="pointer-events-none absolute left-1/2 top-1/2 h-72 w-72 -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent-sky/20 blur-[80px]" />
               <div className="animate-float">
-                <Flex mood="excited" size={260} speechBubble="Welcome! I'm Flex, your study buddy!" />
+                <Flex mood="excited" size={260} />
               </div>
               {/* reflective floor disc */}
               <div className="pointer-events-none mx-auto -mt-2 h-6 w-44 rounded-[100%] bg-accent-sky/25 blur-md" />

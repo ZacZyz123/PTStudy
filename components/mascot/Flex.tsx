@@ -1,7 +1,7 @@
 'use client'
 
 import { useId } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 
 export type FlexMood =
   | 'idle'
@@ -19,6 +19,8 @@ export interface FlexProps {
   mood: FlexMood
   size?: number
   animate?: boolean
+  /** Deprecated: Flex no longer renders speech bubbles. Accepted for
+   *  backward-compat with existing call sites, but intentionally ignored. */
   speechBubble?: string
   onClick?: () => void
   className?: string
@@ -425,14 +427,13 @@ function Extras({ mood }: { mood: FlexMood }) {
 /**
  * Flex — the PT Study mascot. A sleek android in fitted black medical scrubs:
  * brushed-chrome head with a dark glass visor + glowing cyan eyes, a draped
- * stethoscope, an embroidered "DPT" badge, a chest pocket, segmented arms, and
+ * stethoscope, a right chest pocket embroidered "DPT Flex", segmented arms, and
  * white sneakers. Pure SVG, zero image files.
  */
 export default function Flex({
   mood,
   size = 120,
   animate = true,
-  speechBubble,
   onClick,
   className = '',
 }: FlexProps) {
@@ -459,22 +460,6 @@ export default function Flex({
       onClick={onClick}
       role={onClick ? 'button' : undefined}
     >
-      <AnimatePresence>
-        {speechBubble && (
-          <motion.div
-            initial={{ opacity: 0, y: 8, scale: 0.9, x: '-50%' }}
-            animate={{ opacity: 1, y: 0, scale: 1, x: '-50%' }}
-            exit={{ opacity: 0, y: 8, scale: 0.9, x: '-50%' }}
-            transition={{ type: 'spring', stiffness: 350, damping: 22 }}
-            className="absolute bottom-full left-1/2 z-10 mb-2 w-max max-w-[min(220px,68vw)] rounded-2xl bg-white px-4 py-2.5 text-center text-sm font-semibold text-slate-800"
-            style={{ filter: 'drop-shadow(0 4px 12px rgba(56,189,248,0.3))' }}
-          >
-            {speechBubble}
-            <span className="absolute left-1/2 top-full -translate-x-1/2 border-8 border-transparent border-t-white" />
-          </motion.div>
-        )}
-      </AnimatePresence>
-
       <motion.svg
         viewBox="0 0 200 240"
         width={size}
@@ -574,7 +559,7 @@ export default function Flex({
         <circle cx={100} cy={174} r={3.5} fill="#0A1525" />
 
         {/* embroidered name on the pocket (above the stethoscope so it stays legible) */}
-        <text x={128} y={176} textAnchor="middle" fontSize={7.5} fontWeight="bold" fill={SKY} fontFamily="sans-serif">
+        <text x={128} y={170} textAnchor="middle" fontSize={7.5} fontWeight="bold" fill={SKY} fontFamily="sans-serif">
           DPT Flex
         </text>
 

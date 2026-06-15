@@ -35,7 +35,7 @@ export default async function FlashcardsPage({ params }: { params: { id: string 
         {flashcards.length === 0 ? (
           <EmptyState message="No flashcards for this lecture yet — Flex is napping." />
         ) : (
-          <FlashcardDeck cards={flashcards} />
+          <FlashcardDeck cards={flashcards} contentId={content.id} />
         )}
       </div>
     </div>
