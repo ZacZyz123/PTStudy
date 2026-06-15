@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server'
 import {
-  CLAUDE_MODEL,
   completeWithRetry,
   isOverloadError,
   studyGuidePrompt,
@@ -44,7 +43,6 @@ async function requireAdmin(): Promise<boolean> {
 
 function complete(prompt: string): Promise<string> {
   return completeWithRetry({
-    model: CLAUDE_MODEL,
     max_tokens: 16000,
     messages: [{ role: 'user', content: prompt }],
   })

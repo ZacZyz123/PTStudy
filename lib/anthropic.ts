@@ -2,7 +2,14 @@ import Anthropic from '@anthropic-ai/sdk'
 
 export const CLAUDE_MODEL = 'claude-sonnet-4-6'
 
-/** How many times to retry a call when the API is overloaded/rate-limited. */
+/**
+ * Model preference order for generation. If the primary stays overloaded after
+ * its retries, we fall back to a lighter-but-capable model so the user gets
+ * content instead of an error during sustained capacity spikes.
+ */
+export const FALLBACK_MODELS = [CLAUDE_MODEL, 'claude-haiku-4-5-20251001']
+
+/** How many times to retry a single model when overloaded/rate-limited. */
 const MAX_RETRIES = 4
 
 let anthropicClient: Anthropic | null = null
@@ -33,35 +40,48 @@ export function isOverloadError(err: unknown): boolean {
   )
 }
 
+async function streamText(params: Anthropic.MessageStreamParams): Promise<string> {
+  // SDK retry disabled (maxRetries: 0) so completeWithRetry is the single source
+  // of retries — preventing nested backoffs from blowing past the function's
+  // time limit and turning an overload into a timeout.
+  const stream = getAnthropic().messages.stream(params, { maxRetries: 0 })
+  const message = await stream.finalMessage()
+  return message.content
+    .filter((block) => block.type === 'text')
+    .map((block) => (block as { text: string }).text)
+    .join('')
+}
+
 /**
- * Run a streaming completion and return its text, retrying the whole call on
- * overload/rate-limit/5xx errors (these can also occur mid-stream, which the
- * SDK's per-request retry does not cover). Uses exponential backoff + jitter.
+ * Run a streaming completion and return its text. Retries each model on
+ * overload/rate-limit/5xx errors (which can also occur mid-stream, beyond what
+ * the SDK's per-request retry covers) with exponential backoff + jitter, then
+ * falls back through `models` so a sustained overload still yields content.
  *
- * The SDK's own retry is disabled per request (maxRetries: 0) so this loop is
- * the single source of retries — preventing nested backoffs from blowing past
- * the serverless function's time limit and turning an overload into a timeout.
+ * Pass params without `model`; the model is supplied from the fallback chain.
  */
 export async function completeWithRetry(
-  params: Anthropic.MessageStreamParams,
-  maxRetries = MAX_RETRIES
+  params: Omit<Anthropic.MessageStreamParams, 'model'>,
+  { models = FALLBACK_MODELS, maxRetries = MAX_RETRIES }: { models?: string[]; maxRetries?: number } = {}
 ): Promise<string> {
-  let attempt = 0
-  for (;;) {
-    try {
-      const stream = getAnthropic().messages.stream(params, { maxRetries: 0 })
-      const message = await stream.finalMessage()
-      return message.content
-        .filter((block) => block.type === 'text')
-        .map((block) => (block as { text: string }).text)
-        .join('')
-    } catch (err) {
-      attempt += 1
-      if (attempt > maxRetries || !isOverloadError(err)) throw err
-      const backoff = Math.min(1000 * 2 ** (attempt - 1), 16_000) + Math.random() * 400
-      await new Promise((resolve) => setTimeout(resolve, backoff))
+  let lastError: unknown = new Error('No models available')
+  for (const model of models) {
+    let attempt = 0
+    for (;;) {
+      try {
+        return await streamText({ ...params, model })
+      } catch (err) {
+        lastError = err
+        // Only overloads are worth retrying / falling back; surface anything else.
+        if (!isOverloadError(err)) throw err
+        attempt += 1
+        if (attempt > maxRetries) break // exhausted this model — try the next one
+        const backoff = Math.min(1000 * 2 ** (attempt - 1), 16_000) + Math.random() * 400
+        await new Promise((resolve) => setTimeout(resolve, backoff))
+      }
     }
   }
+  throw lastError
 }
 
 
