@@ -199,9 +199,9 @@ export default function LandingPage() {
               className="mt-10 grid max-w-md grid-cols-3 gap-4 lg:mx-0"
             >
               {[
-                { to: 60, suffix: 's', label: 'lecture → study kit' },
-                { to: 15, suffix: '', label: 'flashcards per lecture' },
-                { to: 100, suffix: ' XP', label: 'per challenge win' },
+                { to: 60, suffix: 's', label: 'Lecture → study kit' },
+                { to: 15, suffix: '', label: 'Flashcards per lecture' },
+                { to: 100, suffix: ' XP', label: 'Per challenge win' },
               ].map((s) => (
                 <div key={s.label} className="text-center lg:text-left">
                   <p className="mono text-2xl font-bold text-accent-sky sm:text-3xl">

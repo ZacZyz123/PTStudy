@@ -94,9 +94,9 @@ export default async function DashboardPage() {
       {/* Stats */}
       <div className="mt-6 grid grid-cols-2 gap-4 lg:grid-cols-4">
         <StatCard label="Total XP" value={profile?.xp ?? 0} icon={<IconBolt size={22} />} color="sky" />
-        <StatCard label="Day streak" value={profile?.streak_days ?? 0} icon={<IconFlame size={22} />} color="amber" />
-        <StatCard label="Quizzes taken" value={quizzesTaken} icon={<IconBrain size={22} />} color="violet" />
-        <StatCard label="Avg score" value={avgScore} suffix="%" icon={<IconTargetArrow size={22} />} color="emerald" />
+        <StatCard label="Day Streak" value={profile?.streak_days ?? 0} icon={<IconFlame size={22} />} color="amber" />
+        <StatCard label="Quizzes Taken" value={quizzesTaken} icon={<IconBrain size={22} />} color="violet" />
+        <StatCard label="Avg Score" value={avgScore} suffix="%" icon={<IconTargetArrow size={22} />} color="emerald" />
       </div>
 
       {/* Priority topics */}

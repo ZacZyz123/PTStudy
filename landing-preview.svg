@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="900" viewBox="0 0 1400 900">
+<defs>
+  <linearGradient id="hi" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fff" stop-opacity="0.10"/><stop offset="30%" stop-color="#fff" stop-opacity="0"/></linearGradient>
+  <linearGradient id="grad" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#38BDF8"/><stop offset="50%" stop-color="#818CF8"/><stop offset="100%" stop-color="#38BDF8"/></linearGradient>
+  <radialGradient id="b1" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#38BDF8" stop-opacity="0.16"/><stop offset="100%" stop-color="#38BDF8" stop-opacity="0"/></radialGradient>
+  <radialGradient id="b2" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#6366F1" stop-opacity="0.16"/><stop offset="100%" stop-color="#6366F1" stop-opacity="0"/></radialGradient>
+  <radialGradient id="ped" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#38BDF8" stop-opacity="0.28"/><stop offset="100%" stop-color="#38BDF8" stop-opacity="0"/></radialGradient>
+</defs>
+<rect width="1400" height="900" fill="#0C1322"/>
+<ellipse cx="160" cy="240" rx="420" ry="360" fill="url(#b1)"/>
+<ellipse cx="1280" cy="780" rx="460" ry="380" fill="url(#b2)"/>
+<rect x="0" y="0" width="1400" height="2" fill="url(#grad)"/><rect x="0" y="0" width="1400" height="64" fill="rgba(12,19,34,0.6)"/><line x1="0" y1="64" x2="1400" y2="64" stroke="rgba(148,163,184,0.14)"/><rect x="40" y="18" width="30" height="30" rx="9" fill="#38BDF8" opacity="0.15"/><polygon points="53,26 49,35 54,35 52,42 60,32 54,32" fill="#38BDF8"/><text x="80" y="40" font-size="17" font-weight="700" fill="#F1F5F9" text-anchor="start" font-family="sans-serif">PT</text><text x="104" y="40" font-size="17" font-weight="700" fill="#38BDF8" text-anchor="start" font-family="sans-serif">Study</text><text x="1200" y="40" font-size="14" font-weight="400" fill="#A6B4C6" text-anchor="start" font-family="sans-serif">Log in</text><rect x="1250" y="20" width="110" height="32" rx="16" fill="#38BDF8"/><text x="1305" y="40" font-size="13" font-weight="600" fill="#0C1322" text-anchor="middle" font-family="sans-serif">Get started</text><rect x="80" y="150" width="300" height="32" rx="16" fill="#38BDF8" opacity="0.10" stroke="#38BDF8" stroke-opacity="0.3"/><circle cx="102" cy="166" r="4" fill="#38BDF8"/><text x="116" y="171" font-size="12" font-weight="600" fill="#38BDF8" text-anchor="start" font-family="sans-serif">Built for Mayo Clinic DPT students</text><text x="80" y="250" font-size="58" font-weight="700" fill="#F1F5F9" text-anchor="start" font-family="sans-serif">PT school is brutal.</text><text x="80" y="318" font-size="58" font-weight="700" fill="url(#grad)" text-anchor="start" font-family="sans-serif">Studying shouldn’t be.</text><text x="80" y="372" font-size="18" font-weight="400" fill="#A6B4C6" text-anchor="start" font-family="sans-serif">Drop in a lecture — get an AI study guide, 3D flashcards, and a</text><text x="80" y="400" font-size="18" font-weight="400" fill="#A6B4C6" text-anchor="start" font-family="sans-serif">clinical-reasoning quiz in seconds. Then challenge your</text><text x="80" y="428" font-size="18" font-weight="400" fill="#A6B4C6" text-anchor="start" font-family="sans-serif">classmates and fight for the top of the leaderboard.</text><rect x="80" y="464" width="270" height="54" rx="27" fill="#38BDF8"/><text x="215" y="497" font-size="16" font-weight="700" fill="#0C1322" text-anchor="middle" font-family="sans-serif">Start studying — $25/mo →</text><text x="380" y="497" font-size="14" font-weight="400" fill="#A6B4C6" text-anchor="start" font-family="sans-serif">See what’s inside ↓</text><text x="80" y="575" font-size="30" font-weight="700" fill="#38BDF8" text-anchor="start" font-family="monospace">60s</text><text x="80" y="598" font-size="12" font-weight="400" fill="#A6B4C6" text-anchor="start" font-family="sans-serif">Lecture → study kit</text><text x="250" y="575" font-size="30" font-weight="700" fill="#38BDF8" text-anchor="start" font-family="monospace">15</text><text x="250" y="598" font-size="12" font-weight="400" fill="#A6B4C6" text-anchor="start" font-family="sans-serif">Flashcards per lecture</text><text x="420" y="575" font-size="30" font-weight="700" fill="#38BDF8" text-anchor="start" font-family="monospace">100 XP</text><text x="420" y="598" font-size="12" font-weight="400" fill="#A6B4C6" text-anchor="start" font-family="sans-serif">Per challenge win</text><ellipse cx="1080" cy="375" rx="220" ry="220" fill="url(#ped)"/><svg x="905" y="150" width="350" height="420" viewBox="0 0 200 240">
+  <defs>
+    <radialGradient id="fhhero" cx="38%" cy="26%" r="82%"><stop offset="0%" stop-color="#fff"/><stop offset="42%" stop-color="#D5DEE9"/><stop offset="78%" stop-color="#9AA9BC"/><stop offset="100%" stop-color="#5B6B80"/></radialGradient>
+    <radialGradient id="fehero" cx="50%" cy="38%" r="68%"><stop offset="0%" stop-color="#fff"/><stop offset="40%" stop-color="#BAE6FD"/><stop offset="100%" stop-color="#38BDF8"/></radialGradient>
+    <linearGradient id="fahero" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#E8EEF5"/><stop offset="45%" stop-color="#9FB0C3"/><stop offset="100%" stop-color="#5B6B80"/></linearGradient>
+    <linearGradient id="fshero" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#2A3140"/><stop offset="50%" stop-color="#171C28"/><stop offset="100%" stop-color="#0B0E16"/></linearGradient>
+    <linearGradient id="fsdhero" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1B212E"/><stop offset="100%" stop-color="#080A11"/></linearGradient>
+    <linearGradient id="fvhero" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#13243E"/><stop offset="50%" stop-color="#0A1525"/><stop offset="100%" stop-color="#05080F"/></linearGradient>
+    <filter id="fghero" x="-60%" y="-60%" width="220%" height="220%"><feDropShadow dx="0" dy="0" stdDeviation="3" flood-color="#38BDF8" flood-opacity="0.8"/></filter>
+    <filter id="fanhero" x="-150%" y="-150%" width="400%" height="400%"><feDropShadow dx="0" dy="0" stdDeviation="3" flood-color="#38BDF8" flood-opacity="0.9"/></filter>
+  </defs>
+  <g><g>
+    <line x1="68" y1="124" x2="38" y2="88" stroke="#05070C" stroke-width="17" stroke-linecap="round" opacity="0.3"/>
+    <line x1="68" y1="124" x2="38" y2="88" stroke="url(#fahero)" stroke-width="14" stroke-linecap="round"/>
+    <line x1="68" y1="124" x2="53" y2="106" stroke="#fff" stroke-width="3" stroke-linecap="round" opacity="0.25"/>
+    <circle cx="53" cy="106" r="4.5" fill="#64748B" stroke="#334155" stroke-width="1.2"/></g><g><circle cx="36" cy="84" r="9" fill="url(#fahero)" stroke="#334155" stroke-width="1.2"/><circle cx="33.5" cy="81.5" r="2.6" fill="#fff" opacity="0.4"/></g><g>
+    <line x1="132" y1="124" x2="162" y2="88" stroke="#05070C" stroke-width="17" stroke-linecap="round" opacity="0.3"/>
+    <line x1="132" y1="124" x2="162" y2="88" stroke="url(#fahero)" stroke-width="14" stroke-linecap="round"/>
+    <line x1="132" y1="124" x2="147" y2="106" stroke="#fff" stroke-width="3" stroke-linecap="round" opacity="0.25"/>
+    <circle cx="147" cy="106" r="4.5" fill="#64748B" stroke="#334155" stroke-width="1.2"/></g><g><circle cx="164" cy="84" r="9" fill="url(#fahero)" stroke="#334155" stroke-width="1.2"/><circle cx="161.5" cy="81.5" r="2.6" fill="#fff" opacity="0.4"/></g></g>
+
+  <rect x="77" y="196" width="17" height="18" rx="7" fill="url(#fsdhero)"/>
+  <rect x="106" y="196" width="17" height="18" rx="7" fill="url(#fsdhero)"/>
+  <rect x="68" y="210" width="32" height="16" rx="7" fill="#F8FAFC"/>
+  <rect x="104" y="210" width="32" height="16" rx="7" fill="#F8FAFC"/>
+  <rect x="68" y="221" width="32" height="6" rx="3" fill="#CBD5E1"/>
+  <rect x="104" y="221" width="32" height="6" rx="3" fill="#CBD5E1"/>
+  <path d="M75 215 l11 3" stroke="#38BDF8" stroke-width="2" stroke-linecap="round"/>
+  <path d="M111 215 l11 3" stroke="#38BDF8" stroke-width="2" stroke-linecap="round"/>
+
+  <path d="M60 120 Q40 124 40 145 Q40 157 55 156 L67 149 Q60 132 71 122 Z" fill="url(#fsdhero)"/>
+  <path d="M140 120 Q160 124 160 145 Q160 157 145 156 L133 149 Q140 132 129 122 Z" fill="url(#fsdhero)"/>
+  <path d="M44 150 Q50 156 60 152" stroke="#000" stroke-width="1.5" fill="none" opacity="0.4"/>
+  <path d="M156 150 Q150 156 140 152" stroke="#000" stroke-width="1.5" fill="none" opacity="0.4"/>
+
+  <path d="M58 124 Q66 116 78 115 Q100 112 122 115 Q134 116 142 124 L149 190 Q149 208 130 208 L70 208 Q51 208 51 190 Z" fill="url(#fshero)" stroke="#05070C" stroke-width="1"/>
+  <path d="M58 124 L51 190 Q51 201 59 206 L63 150 Z" fill="#000" opacity="0.2"/>
+  <path d="M142 124 L149 190 Q149 201 141 206 L137 150 Z" fill="#000" opacity="0.2"/>
+  <path d="M72 150 Q90 168 78 198" stroke="#000" stroke-width="2" fill="none" opacity="0.18" stroke-linecap="round"/>
+  <path d="M128 150 Q110 168 122 198" stroke="#000" stroke-width="2" fill="none" opacity="0.18" stroke-linecap="round"/>
+  <line x1="100" y1="140" x2="100" y2="204" stroke="#000" stroke-width="1.5" opacity="0.25"/>
+
+  <path d="M86 116 L100 141 L114 116 Q100 121 86 116 Z" fill="url(#fsdhero)"/>
+  <path d="M85 116 L100 140" stroke="#2B3344" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <path d="M115 116 L100 140" stroke="#2B3344" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+
+  <path d="M62 168 h22 v16 q0 3 -3 3 h-16 q-3 0 -3 -3 Z" fill="none" stroke="#2B3344" stroke-width="1.5"/>
+  <line x1="62" y1="172" x2="84" y2="172" stroke="#2B3344" stroke-width="1.5"/>
+
+  <path d="M82 118 Q72 150 96 170" stroke="#67E8F9" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+  <path d="M118 118 Q128 150 104 170" stroke="#67E8F9" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+  <circle cx="100" cy="174" r="7" fill="#67E8F9"/><circle cx="100" cy="174" r="3.5" fill="#0A1525"/>
+
+  <rect x="108" y="150" width="30" height="16" rx="5" fill="#0A1525" stroke="#38BDF8" stroke-width="1.4"/>
+  <text x="123" y="162" text-anchor="middle" font-size="10" font-weight="bold" fill="#38BDF8" font-family="sans-serif">DPT</text>
+
+  <g >
+    <line x1="100" y1="28" x2="100" y2="15" stroke="#7C8BA3" stroke-width="2.5" stroke-linecap="round"/>
+    <circle cx="100" cy="12" r="4" fill="#38BDF8" filter="url(#fanhero)"/>
+    <rect x="43" y="56" width="12" height="28" rx="6" fill="#8696AC" stroke="#475569" stroke-width="1.2"/>
+    <rect x="145" y="56" width="12" height="28" rx="6" fill="#8696AC" stroke="#475569" stroke-width="1.2"/>
+    <circle cx="49" cy="70" r="2" fill="#475569"/><circle cx="151" cy="70" r="2" fill="#475569"/>
+    <ellipse cx="100" cy="68" rx="48" ry="50" fill="url(#fhhero)" stroke="#3E4A5C" stroke-width="2"/>
+    <ellipse cx="84" cy="42" rx="22" ry="12" fill="#fff" opacity="0.45"/>
+    <ellipse cx="120" cy="50" rx="6" ry="11" fill="#fff" opacity="0.15"/>
+    <path d="M147 80 A48 50 0 0 1 116 115" stroke="#38BDF8" stroke-width="2.5" fill="none" opacity="0.45" stroke-linecap="round"/>
+    <line x1="100" y1="19" x2="100" y2="40" stroke="#9FB0C3" stroke-width="1.5" opacity="0.6"/>
+    <path d="M60 62 Q57 82 68 98" stroke="#94A3B8" stroke-width="1" fill="none" opacity="0.35"/>
+    <rect x="60" y="46" width="80" height="36" rx="18" fill="url(#fvhero)" stroke="#0A1626" stroke-width="1.5"/>
+    <path d="M68 52 Q100 46 132 52" stroke="#fff" stroke-width="3" opacity="0.12" fill="none" stroke-linecap="round"/>
+    <path d="M70 80 Q100 86 130 80" stroke="#38BDF8" stroke-width="1.5" opacity="0.4" fill="none" stroke-linecap="round"/>
+    
+    <g filter="url(#fghero)"><ellipse cx="84" cy="61" rx="11" ry="12" fill="url(#fehero)"/><ellipse cx="116" cy="61" rx="11" ry="12" fill="url(#fehero)"/><circle cx="80" cy="56" r="2.5" fill="#fff"/><circle cx="112" cy="56" r="2.5" fill="#fff"/></g>
+    <g filter="url(#fghero)"><path d="M80 78 q20 24 40 0 z" fill="#38BDF8" opacity="0.9"/><path d="M80 78 q20 24 40 0" stroke="#BAE6FD" stroke-width="3" fill="none"/></g>
+    <circle cx="62" cy="92" r="1.8" fill="#64748B"/><circle cx="138" cy="92" r="1.8" fill="#64748B"/>
+  </g></svg><ellipse cx="1080" cy="585" rx="120" ry="16" fill="#38BDF8" opacity="0.18"/><rect x="975" y="148" width="252" height="50" rx="16" fill="#fff"/><polygon points="1090,196 1106,196 1098,210" fill="#fff"/><text x="1101" y="178" font-size="13" font-weight="600" fill="#1e293b" text-anchor="middle" font-family="sans-serif">Welcome! I'm Flex, your study buddy!</text><rect x="80" y="680" width="400" height="170" rx="20" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.10)"/>
+    <rect x="80" y="680" width="400" height="170" rx="20" fill="url(#hi)" opacity="0.5"/><rect x="108" y="708" width="48" height="48" rx="14" fill="#38BDF8" opacity="0.14"/><circle cx="132" cy="732" r="10" fill="none" stroke="#38BDF8" stroke-width="2.5"/><text x="108" y="790" font-size="19" font-weight="700" fill="#F1F5F9" text-anchor="start" font-family="sans-serif">AI study guides</text><text x="108" y="818" font-size="13" font-weight="400" fill="#A6B4C6" text-anchor="start" font-family="sans-serif">Every lecture distilled into a clean, exam-focus</text><text x="108" y="836" font-size="13" font-weight="400" fill="#A6B4C6" text-anchor="start" font-family="sans-serif">ed guide by Flex.</text><rect x="510" y="680" width="400" height="170" rx="20" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.10)"/>
+    <rect x="510" y="680" width="400" height="170" rx="20" fill="url(#hi)" opacity="0.5"/><rect x="538" y="708" width="48" height="48" rx="14" fill="#6366F1" opacity="0.14"/><circle cx="562" cy="732" r="10" fill="none" stroke="#6366F1" stroke-width="2.5"/><text x="538" y="790" font-size="19" font-weight="700" fill="#F1F5F9" text-anchor="start" font-family="sans-serif">3D flashcards</text><text x="538" y="818" font-size="13" font-weight="400" fill="#A6B4C6" text-anchor="start" font-family="sans-serif">15 auto-generated cards per lecture with a satis</text><text x="538" y="836" font-size="13" font-weight="400" fill="#A6B4C6" text-anchor="start" font-family="sans-serif">fying physical flip.</text><rect x="940" y="680" width="400" height="170" rx="20" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.10)"/>
+    <rect x="940" y="680" width="400" height="170" rx="20" fill="url(#hi)" opacity="0.5"/><rect x="968" y="708" width="48" height="48" rx="14" fill="#10B981" opacity="0.14"/><circle cx="992" cy="732" r="10" fill="none" stroke="#10B981" stroke-width="2.5"/><text x="968" y="790" font-size="19" font-weight="700" fill="#F1F5F9" text-anchor="start" font-family="sans-serif">Adaptive quizzes</text><text x="968" y="818" font-size="13" font-weight="400" fill="#A6B4C6" text-anchor="start" font-family="sans-serif">Scenario-based clinical reasoning with instant e</text><text x="968" y="836" font-size="13" font-weight="400" fill="#A6B4C6" text-anchor="start" font-family="sans-serif">xplanations + XP.</text></svg>

@@ -74,8 +74,8 @@ export default async function ProfilePage() {
       {/* Stats */}
       <div className="mt-4 grid grid-cols-2 gap-4 lg:grid-cols-4">
         <StatCard label="Total XP" value={profile.xp} icon={<IconBolt size={22} />} color="sky" />
-        <StatCard label="Day streak" value={profile.streak_days} icon={<IconFlame size={22} />} color="amber" />
-        <StatCard label="Quizzes taken" value={quizCount ?? 0} icon={<IconBrain size={22} />} color="violet" />
+        <StatCard label="Day Streak" value={profile.streak_days} icon={<IconFlame size={22} />} color="amber" />
+        <StatCard label="Quizzes Taken" value={quizCount ?? 0} icon={<IconBrain size={22} />} color="violet" />
         <StatCard label="Challenge wins" value={winCount ?? 0} icon={<IconSwords size={22} />} color="emerald" />
       </div>
 

@@ -27,7 +27,7 @@ export default async function GuidesPage() {
     <div>
       <div className="flex items-center gap-2">
         <IconBook size={24} className="text-accent-sky" />
-        <h1 className="text-2xl font-bold">Study guides</h1>
+        <h1 className="text-2xl font-bold">Study Guides</h1>
       </div>
       <p className="mt-1 text-sm text-text-secondary">
         Every lecture, turned into guides, flashcards, and quizzes by Flex.

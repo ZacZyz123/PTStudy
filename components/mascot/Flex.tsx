@@ -24,14 +24,14 @@ export interface FlexProps {
   className?: string
 }
 
-/* ---------- palette (chrome android) ---------- */
-const SCRUBS = '#15151f' // black scrubs
-const SCRUBS_DK = '#0c0c14'
-const STETHO = '#7DD3FC' // light-blue stethoscope
+/* ---------- palette ---------- */
+const STETHO = '#67E8F9' // light-cyan stethoscope
 const SKY = '#38BDF8'
-const EYE_BRIGHT = '#FDE68A'
-const EYE_AMBER = '#F59E0B'
+const EYE_BRIGHT = '#BAE6FD'
+const EYE_CORE = '#38BDF8' // calm cyan eyes (controlled, professional)
 const METAL_DARK = '#475569'
+const COLLAR = '#2B3344' // scrub seam / collar trim
+const SOLE = '#CBD5E1'
 
 /* ---------- per-mood body animation for the whole character ---------- */
 function bodyAnimation(mood: FlexMood, animate: boolean) {
@@ -64,20 +64,18 @@ function bodyAnimation(mood: FlexMood, animate: boolean) {
   }
 }
 
-/* ---------- glowing amber eyes ---------- */
+/* ---------- glowing eyes ---------- */
 function Eyes({ mood, glowId, eyeGradId }: { mood: FlexMood; glowId: string; eyeGradId: string }) {
   const fill = `url(#${eyeGradId})`
   const glow = { filter: `url(#${glowId})` }
 
-  // closed / arc shapes draw with amber stroke; round shapes fill with gradient
   const arc = (d: string) => (
-    <path d={d} stroke={EYE_AMBER} strokeWidth={5} strokeLinecap="round" fill="none" style={glow} />
+    <path d={d} stroke={EYE_BRIGHT} strokeWidth={5} strokeLinecap="round" fill="none" style={glow} />
   )
 
   switch (mood) {
     case 'happy':
     case 'waving':
-      // upward squint arcs ^ ^
       return (
         <g>
           {arc('M74 64 q9 -11 18 0')}
@@ -86,7 +84,6 @@ function Eyes({ mood, glowId, eyeGradId }: { mood: FlexMood; glowId: string; eye
       )
     case 'excited':
     case 'celebrating':
-      // large bright eyes with sparkle
       return (
         <g style={glow}>
           <ellipse cx={84} cy={61} rx={11} ry={12} fill={fill} />
@@ -96,7 +93,6 @@ function Eyes({ mood, glowId, eyeGradId }: { mood: FlexMood; glowId: string; eye
         </g>
       )
     case 'thinking':
-      // glance up-right
       return (
         <g style={glow}>
           <ellipse cx={87} cy={57} rx={8} ry={9} fill={fill} />
@@ -104,7 +100,6 @@ function Eyes({ mood, glowId, eyeGradId }: { mood: FlexMood; glowId: string; eye
         </g>
       )
     case 'sad':
-      // droopy downward arcs, lowered, with a glowing tear
       return (
         <g>
           {arc('M74 60 q9 9 18 2')}
@@ -120,7 +115,6 @@ function Eyes({ mood, glowId, eyeGradId }: { mood: FlexMood; glowId: string; eye
         </g>
       )
     case 'focused':
-      // narrowed determined slits
       return (
         <g style={glow}>
           <ellipse cx={84} cy={62} rx={10} ry={4.5} fill={fill} />
@@ -128,7 +122,6 @@ function Eyes({ mood, glowId, eyeGradId }: { mood: FlexMood; glowId: string; eye
         </g>
       )
     case 'surprised':
-      // wide round bright eyes
       return (
         <g style={glow}>
           <circle cx={84} cy={61} r={11.5} fill={fill} />
@@ -136,7 +129,6 @@ function Eyes({ mood, glowId, eyeGradId }: { mood: FlexMood; glowId: string; eye
         </g>
       )
     case 'sleeping':
-      // dim closed lines — —
       return (
         <g opacity={0.5} style={glow}>
           {arc('M74 63 q9 4 18 0')}
@@ -145,7 +137,6 @@ function Eyes({ mood, glowId, eyeGradId }: { mood: FlexMood; glowId: string; eye
       )
     case 'idle':
     default:
-      // standard glowing ovals with a soft brightness pulse
       return (
         <motion.g
           style={glow}
@@ -161,9 +152,9 @@ function Eyes({ mood, glowId, eyeGradId }: { mood: FlexMood; glowId: string; eye
   }
 }
 
-/* ---------- metallic brow plates (subtle expression) ---------- */
+/* ---------- brow plates (subtle expression on the visor) ---------- */
 function Brows({ mood }: { mood: FlexMood }) {
-  const base = { stroke: METAL_DARK, strokeWidth: 4, strokeLinecap: 'round' as const, opacity: 0.85 }
+  const base = { stroke: '#7DD3FC', strokeWidth: 3.5, strokeLinecap: 'round' as const, opacity: 0.55 }
   switch (mood) {
     case 'thinking':
       return (
@@ -193,8 +184,6 @@ function Brows({ mood }: { mood: FlexMood }) {
           <line x1={108} y1={41} x2={125} y2={41} />
         </g>
       )
-    case 'sleeping':
-      return null
     default:
       return null
   }
@@ -204,7 +193,7 @@ function Brows({ mood }: { mood: FlexMood }) {
 function Mouth({ mood, glowId }: { mood: FlexMood; glowId: string }) {
   const glow = { filter: `url(#${glowId})` }
   const line = (d: string) => (
-    <path d={d} stroke={EYE_AMBER} strokeWidth={4} fill="none" strokeLinecap="round" style={glow} />
+    <path d={d} stroke={EYE_BRIGHT} strokeWidth={4} fill="none" strokeLinecap="round" style={glow} />
   )
 
   switch (mood) {
@@ -213,7 +202,7 @@ function Mouth({ mood, glowId }: { mood: FlexMood; glowId: string }) {
       return (
         <g>
           {line('M80 80 q20 16 40 0')}
-          <g stroke={SCRUBS_DK} strokeWidth={2} opacity={0.5}>
+          <g stroke="#0B0E16" strokeWidth={2} opacity={0.5}>
             <line x1={92} y1={84} x2={92} y2={90} />
             <line x1={100} y1={86} x2={100} y2={92} />
             <line x1={108} y1={84} x2={108} y2={90} />
@@ -222,10 +211,9 @@ function Mouth({ mood, glowId }: { mood: FlexMood; glowId: string }) {
       )
     case 'excited':
     case 'celebrating':
-      // open grin
       return (
         <g style={glow}>
-          <path d="M80 78 q20 24 40 0 z" fill={EYE_AMBER} opacity={0.9} />
+          <path d="M80 78 q20 24 40 0 z" fill={EYE_CORE} opacity={0.9} />
           <path d="M80 78 q20 24 40 0" stroke={EYE_BRIGHT} strokeWidth={3} fill="none" />
         </g>
       )
@@ -238,7 +226,7 @@ function Mouth({ mood, glowId }: { mood: FlexMood; glowId: string }) {
     case 'surprised':
       return (
         <g style={glow}>
-          <ellipse cx={100} cy={86} rx={8} ry={10} fill={EYE_AMBER} opacity={0.85} />
+          <ellipse cx={100} cy={86} rx={8} ry={10} fill={EYE_CORE} opacity={0.85} />
         </g>
       )
     case 'sleeping':
@@ -249,7 +237,7 @@ function Mouth({ mood, glowId }: { mood: FlexMood; glowId: string }) {
   }
 }
 
-/* ---------- robotic arms ---------- */
+/* ---------- robotic arms (tapered, two-tone, less clip-art) ---------- */
 function Limb({
   x1,
   y1,
@@ -263,18 +251,29 @@ function Limb({
   y2: number
   gradId: string
 }) {
+  const mx = (x1 + x2) / 2
+  const my = (y1 + y2) / 2
   return (
     <g>
-      <line x1={x1} y1={y1} x2={x2} y2={y2} stroke={`url(#${gradId})`} strokeWidth={16} strokeLinecap="round" />
-      <line x1={x1} y1={y1} x2={x2} y2={y2} stroke={METAL_DARK} strokeWidth={16} strokeLinecap="round" opacity={0.18} />
-      {/* elbow joint */}
-      <circle cx={(x1 + x2) / 2} cy={(y1 + y2) / 2} r={5} fill="#64748B" stroke="#334155" strokeWidth={1.5} />
+      {/* soft cast shadow */}
+      <line x1={x1} y1={y1} x2={x2} y2={y2} stroke="#05070C" strokeWidth={17} strokeLinecap="round" opacity={0.3} />
+      {/* brushed-metal shaft */}
+      <line x1={x1} y1={y1} x2={x2} y2={y2} stroke={`url(#${gradId})`} strokeWidth={14} strokeLinecap="round" />
+      {/* specular highlight */}
+      <line x1={x1} y1={y1} x2={mx} y2={my} stroke="#FFFFFF" strokeWidth={3} strokeLinecap="round" opacity={0.25} />
+      {/* elbow servo */}
+      <circle cx={mx} cy={my} r={4.5} fill="#64748B" stroke="#334155" strokeWidth={1.2} />
     </g>
   )
 }
 
 function Hand({ cx, cy, gradId }: { cx: number; cy: number; gradId: string }) {
-  return <circle cx={cx} cy={cy} r={9} fill={`url(#${gradId})`} stroke="#334155" strokeWidth={1.5} />
+  return (
+    <g>
+      <circle cx={cx} cy={cy} r={9} fill={`url(#${gradId})`} stroke="#334155" strokeWidth={1.2} />
+      <circle cx={cx - 2.5} cy={cy - 2.5} r={2.6} fill="#FFFFFF" opacity={0.4} />
+    </g>
+  )
 }
 
 function Arms({ mood, gradId }: { mood: FlexMood; gradId: string }) {
@@ -349,11 +348,11 @@ function Extras({ mood }: { mood: FlexMood }) {
   if (mood === 'celebrating') {
     const confetti = [
       { x: 30, y: 30, c: '#38BDF8' },
-      { x: 170, y: 26, c: '#EC4899' },
-      { x: 20, y: 80, c: '#F59E0B' },
+      { x: 170, y: 26, c: '#6366F1' },
+      { x: 20, y: 80, c: '#22D3EE' },
       { x: 180, y: 70, c: '#10B981' },
-      { x: 50, y: 14, c: '#7C3AED' },
-      { x: 150, y: 10, c: '#EF4444' },
+      { x: 50, y: 14, c: '#818CF8' },
+      { x: 150, y: 10, c: '#38BDF8' },
     ]
     return (
       <g>
@@ -396,9 +395,10 @@ function Extras({ mood }: { mood: FlexMood }) {
 }
 
 /**
- * Flex — the PT Study mascot. A chubby chrome android in black scrubs with
- * glowing amber eyes, a "DPT" chest patch, a light-blue stethoscope, robotic
- * arms, and white sneakers. Pure SVG, zero image files.
+ * Flex — the PT Study mascot. A sleek android in fitted black medical scrubs:
+ * brushed-chrome head with a dark glass visor + glowing cyan eyes, a draped
+ * stethoscope, an embroidered "DPT" badge, a chest pocket, segmented arms, and
+ * white sneakers. Pure SVG, zero image files.
  */
 export default function Flex({
   mood,
@@ -418,6 +418,9 @@ export default function Flex({
   const armGradId = `flexArm-${uid}`
   const glowId = `flexGlow-${uid}`
   const antennaGlowId = `flexAntenna-${uid}`
+  const scrubGradId = `flexScrub-${uid}`
+  const scrubDarkId = `flexScrubDk-${uid}`
+  const visorGradId = `flexVisor-${uid}`
 
   const antennaLit = mood === 'excited' || mood === 'celebrating' || mood === 'happy'
 
@@ -453,30 +456,47 @@ export default function Flex({
       >
         <defs>
           {/* brushed-chrome head */}
-          <radialGradient id={headGradId} cx="38%" cy="28%" r="80%">
-            <stop offset="0%" stopColor="#F8FAFC" />
-            <stop offset="45%" stopColor="#CBD5E1" />
-            <stop offset="80%" stopColor="#94A3B8" />
-            <stop offset="100%" stopColor="#64748B" />
+          <radialGradient id={headGradId} cx="38%" cy="26%" r="82%">
+            <stop offset="0%" stopColor="#FFFFFF" />
+            <stop offset="42%" stopColor="#D5DEE9" />
+            <stop offset="78%" stopColor="#9AA9BC" />
+            <stop offset="100%" stopColor="#5B6B80" />
           </radialGradient>
-          {/* glowing amber eye */}
-          <radialGradient id={eyeGradId} cx="50%" cy="40%" r="65%">
-            <stop offset="0%" stopColor="#FFFDF5" />
-            <stop offset="35%" stopColor={EYE_BRIGHT} />
-            <stop offset="100%" stopColor={EYE_AMBER} />
+          {/* glowing cyan eye */}
+          <radialGradient id={eyeGradId} cx="50%" cy="38%" r="68%">
+            <stop offset="0%" stopColor="#FFFFFF" />
+            <stop offset="40%" stopColor={EYE_BRIGHT} />
+            <stop offset="100%" stopColor={EYE_CORE} />
           </radialGradient>
-          {/* silver arm */}
+          {/* brushed-metal arm */}
           <linearGradient id={armGradId} x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#E2E8F0" />
-            <stop offset="50%" stopColor="#94A3B8" />
-            <stop offset="100%" stopColor="#64748B" />
+            <stop offset="0%" stopColor="#E8EEF5" />
+            <stop offset="45%" stopColor="#9FB0C3" />
+            <stop offset="100%" stopColor="#5B6B80" />
           </linearGradient>
-          {/* amber glow filter */}
+          {/* matte-black scrub fabric (front) */}
+          <linearGradient id={scrubGradId} x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stopColor="#2A3140" />
+            <stop offset="50%" stopColor="#171C28" />
+            <stop offset="100%" stopColor="#0B0E16" />
+          </linearGradient>
+          {/* darker scrub fabric (sleeves / neckline / pants) */}
+          <linearGradient id={scrubDarkId} x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stopColor="#1B212E" />
+            <stop offset="100%" stopColor="#080A11" />
+          </linearGradient>
+          {/* dark glass visor */}
+          <linearGradient id={visorGradId} x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stopColor="#13243E" />
+            <stop offset="50%" stopColor="#0A1525" />
+            <stop offset="100%" stopColor="#05080F" />
+          </linearGradient>
+          {/* eye/mouth glow */}
           <filter id={glowId} x="-60%" y="-60%" width="220%" height="220%">
-            <feDropShadow dx="0" dy="0" stdDeviation="3.2" floodColor={EYE_AMBER} floodOpacity="0.85" />
+            <feDropShadow dx="0" dy="0" stdDeviation="3" floodColor={EYE_CORE} floodOpacity="0.8" />
           </filter>
           <filter id={antennaGlowId} x="-150%" y="-150%" width="400%" height="400%">
-            <feDropShadow dx="0" dy="0" stdDeviation="3" floodColor={EYE_AMBER} floodOpacity="0.9" />
+            <feDropShadow dx="0" dy="0" stdDeviation="3" floodColor={SKY} floodOpacity="0.9" />
           </filter>
         </defs>
 
@@ -484,72 +504,104 @@ export default function Flex({
 
         <Arms mood={mood} gradId={armGradId} />
 
-        {/* body — black scrubs */}
-        <rect x={52} y={104} width={96} height={100} rx={44} fill={SCRUBS} />
-        {/* scrub collar V */}
-        <path d="M84 106 L100 124 L116 106" stroke={SCRUBS_DK} strokeWidth={4} fill="none" strokeLinecap="round" />
-        {/* short sleeve caps */}
-        <ellipse cx={58} cy={120} rx={14} ry={16} fill={SCRUBS_DK} />
-        <ellipse cx={142} cy={120} rx={14} ry={16} fill={SCRUBS_DK} />
+        {/* ===== legs (scrub pants) + sneakers ===== */}
+        <rect x={77} y={196} width={17} height={18} rx={7} fill={`url(#${scrubDarkId})`} />
+        <rect x={106} y={196} width={17} height={18} rx={7} fill={`url(#${scrubDarkId})`} />
+        <g>
+          <rect x={68} y={210} width={32} height={16} rx={7} fill="#F8FAFC" />
+          <rect x={104} y={210} width={32} height={16} rx={7} fill="#F8FAFC" />
+          <rect x={68} y={221} width={32} height={6} rx={3} fill={SOLE} />
+          <rect x={104} y={221} width={32} height={6} rx={3} fill={SOLE} />
+          <path d="M75 215 l11 3" stroke={SKY} strokeWidth={2} strokeLinecap="round" />
+          <path d="M111 215 l11 3" stroke={SKY} strokeWidth={2} strokeLinecap="round" />
+        </g>
 
-        {/* sneakers */}
-        <rect x={66} y={196} width={30} height={16} rx={8} fill="white" />
-        <rect x={104} y={196} width={30} height={16} rx={8} fill="white" />
-        <rect x={66} y={206} width={30} height={6} rx={3} fill="#CBD5E1" />
-        <rect x={104} y={206} width={30} height={6} rx={3} fill="#CBD5E1" />
+        {/* ===== short sleeves (over shoulders) ===== */}
+        <path d="M60 120 Q40 124 40 145 Q40 157 55 156 L67 149 Q60 132 71 122 Z" fill={`url(#${scrubDarkId})`} />
+        <path d="M140 120 Q160 124 160 145 Q160 157 145 156 L133 149 Q140 132 129 122 Z" fill={`url(#${scrubDarkId})`} />
+        {/* sleeve cuff hems */}
+        <path d="M44 150 Q50 156 60 152" stroke="#000" strokeWidth={1.5} fill="none" opacity={0.4} />
+        <path d="M156 150 Q150 156 140 152" stroke="#000" strokeWidth={1.5} fill="none" opacity={0.4} />
 
-        {/* stethoscope around neck */}
-        <path d="M76 112 q24 22 48 0" stroke={STETHO} strokeWidth={5} fill="none" strokeLinecap="round" />
-        <path d="M76 112 q-4 14 2 26" stroke={STETHO} strokeWidth={4} fill="none" strokeLinecap="round" />
-        <circle cx={80} cy={142} r={7} fill={STETHO} />
-        <circle cx={80} cy={142} r={4} fill="#38BDF8" />
+        {/* ===== torso: fitted scrub top ===== */}
+        <path
+          d="M58 124 Q66 116 78 115 Q100 112 122 115 Q134 116 142 124 L149 190 Q149 208 130 208 L70 208 Q51 208 51 190 Z"
+          fill={`url(#${scrubGradId})`}
+          stroke="#05070C"
+          strokeWidth={1}
+        />
+        {/* side form shadows */}
+        <path d="M58 124 L51 190 Q51 201 59 206 L63 150 Z" fill="#000" opacity={0.2} />
+        <path d="M142 124 L149 190 Q149 201 141 206 L137 150 Z" fill="#000" opacity={0.2} />
+        {/* fabric fold hints */}
+        <path d="M72 150 Q90 168 78 198" stroke="#000" strokeWidth={2} fill="none" opacity={0.18} strokeLinecap="round" />
+        <path d="M128 150 Q110 168 122 198" stroke="#000" strokeWidth={2} fill="none" opacity={0.18} strokeLinecap="round" />
+        {/* center placket */}
+        <line x1={100} y1={140} x2={100} y2={204} stroke="#000" strokeWidth={1.5} opacity={0.25} />
 
-        {/* DPT patch */}
-        <rect x={104} y={132} width={34} height={18} rx={5} fill="#0F1829" stroke={SKY} strokeWidth={1.5} />
-        <text
-          x={121}
-          y={145}
-          textAnchor="middle"
-          fontSize={11}
-          fontWeight="bold"
-          fill={SKY}
-          fontFamily="sans-serif"
-        >
+        {/* V-neck opening + collar trim */}
+        <path d="M86 116 L100 141 L114 116 Q100 121 86 116 Z" fill={`url(#${scrubDarkId})`} />
+        <path d="M85 116 L100 140" stroke={COLLAR} strokeWidth={2.5} fill="none" strokeLinecap="round" />
+        <path d="M115 116 L100 140" stroke={COLLAR} strokeWidth={2.5} fill="none" strokeLinecap="round" />
+
+        {/* chest pocket (viewer-left) */}
+        <path d="M62 168 h22 v16 q0 3 -3 3 h-16 q-3 0 -3 -3 Z" fill="none" stroke={COLLAR} strokeWidth={1.5} />
+        <line x1={62} y1={172} x2={84} y2={172} stroke={COLLAR} strokeWidth={1.5} />
+
+        {/* stethoscope draped over the neck */}
+        <path d="M82 118 Q72 150 96 170" stroke={STETHO} strokeWidth={4.5} fill="none" strokeLinecap="round" />
+        <path d="M118 118 Q128 150 104 170" stroke={STETHO} strokeWidth={4.5} fill="none" strokeLinecap="round" />
+        <circle cx={100} cy={174} r={7} fill={STETHO} />
+        <circle cx={100} cy={174} r={3.5} fill="#0A1525" />
+
+        {/* embroidered DPT badge (viewer-right chest) */}
+        <rect x={108} y={150} width={30} height={16} rx={5} fill="#0A1525" stroke={SKY} strokeWidth={1.4} />
+        <text x={123} y={162} textAnchor="middle" fontSize={10} fontWeight="bold" fill={SKY} fontFamily="sans-serif">
           DPT
         </text>
 
-        {/* head */}
+        {/* ===== head ===== */}
         <g transform={headTilt}>
           {/* antenna */}
-          <line x1={100} y1={26} x2={100} y2={14} stroke="#64748B" strokeWidth={3} strokeLinecap="round" />
+          <line x1={100} y1={28} x2={100} y2={15} stroke="#7C8BA3" strokeWidth={2.5} strokeLinecap="round" />
           <circle
             cx={100}
-            cy={11}
-            r={4.5}
-            fill={antennaLit ? EYE_AMBER : '#94A3B8'}
+            cy={12}
+            r={4}
+            fill={antennaLit ? SKY : '#9FB0C3'}
             style={antennaLit ? { filter: `url(#${antennaGlowId})` } : undefined}
           />
 
           {/* side ear cans */}
-          <rect x={44} y={58} width={12} height={26} rx={6} fill="#94A3B8" stroke="#475569" strokeWidth={1.5} />
-          <rect x={144} y={58} width={12} height={26} rx={6} fill="#94A3B8" stroke="#475569" strokeWidth={1.5} />
+          <rect x={43} y={56} width={12} height={28} rx={6} fill="#8696AC" stroke="#475569" strokeWidth={1.2} />
+          <rect x={145} y={56} width={12} height={28} rx={6} fill="#8696AC" stroke="#475569" strokeWidth={1.2} />
+          <circle cx={49} cy={70} r={2} fill="#475569" />
+          <circle cx={151} cy={70} r={2} fill="#475569" />
 
           {/* chrome dome */}
-          <ellipse cx={100} cy={68} rx={48} ry={50} fill={`url(#${headGradId})`} stroke="#475569" strokeWidth={2} />
-          {/* top highlight */}
-          <ellipse cx={86} cy={44} rx={20} ry={12} fill="#FFFFFF" opacity={0.35} />
-          {/* faceplate seam */}
-          <line x1={100} y1={24} x2={100} y2={40} stroke="#94A3B8" strokeWidth={2} opacity={0.6} />
-          {/* dark visor recess behind eyes */}
-          <rect x={62} y={48} width={76} height={34} rx={17} fill="#0B1220" opacity={0.28} />
+          <ellipse cx={100} cy={68} rx={48} ry={50} fill={`url(#${headGradId})`} stroke="#3E4A5C" strokeWidth={2} />
+          {/* specular highlights */}
+          <ellipse cx={84} cy={42} rx={22} ry={12} fill="#FFFFFF" opacity={0.45} />
+          <ellipse cx={120} cy={50} rx={6} ry={11} fill="#FFFFFF" opacity={0.15} />
+          {/* cool rim light (futuristic edge) */}
+          <path d="M147 80 A48 50 0 0 1 116 115" stroke={SKY} strokeWidth={2.5} fill="none" opacity={0.45} strokeLinecap="round" />
+          {/* panel seams */}
+          <line x1={100} y1={19} x2={100} y2={40} stroke="#9FB0C3" strokeWidth={1.5} opacity={0.6} />
+          <path d="M60 62 Q57 82 68 98" stroke="#94A3B8" strokeWidth={1} fill="none" opacity={0.35} />
+
+          {/* dark glass visor */}
+          <rect x={60} y={46} width={80} height={36} rx={18} fill={`url(#${visorGradId})`} stroke="#0A1626" strokeWidth={1.5} />
+          {/* visor gloss + accent rim */}
+          <path d="M68 52 Q100 46 132 52" stroke="#FFFFFF" strokeWidth={3} opacity={0.12} fill="none" strokeLinecap="round" />
+          <path d="M70 80 Q100 86 130 80" stroke={SKY} strokeWidth={1.5} opacity={0.4} fill="none" strokeLinecap="round" />
 
           <Brows mood={mood} />
           <Eyes mood={mood} glowId={glowId} eyeGradId={eyeGradId} />
           <Mouth mood={mood} glowId={glowId} />
 
           {/* cheek rivets */}
-          <circle cx={62} cy={88} r={2.2} fill="#64748B" />
-          <circle cx={138} cy={88} r={2.2} fill="#64748B" />
+          <circle cx={62} cy={92} r={1.8} fill="#64748B" />
+          <circle cx={138} cy={92} r={1.8} fill="#64748B" />
         </g>
       </motion.svg>
     </div>
