@@ -95,21 +95,34 @@ function limb(x1, y1, x2, y2, ag) {
 function hand(cx, cy, ag) {
   return `<g><circle cx="${cx}" cy="${cy}" r="9" fill="url(#${ag})" stroke="#334155" stroke-width="1.2"/><circle cx="${cx - 2.5}" cy="${cy - 2.5}" r="2.6" fill="#fff" opacity="0.4"/></g>`
 }
-function arms(mood, ag) {
+// short scrub sleeve that tracks the arm direction at the shoulder
+function sleeve(x1, y1, x2, y2, sd) {
+  const dx = x2 - x1, dy = y2 - y1, len = Math.hypot(dx, dy) || 1
+  const ux = dx / len, uy = dy / len
+  const ex = x1 + ux * 25, ey = y1 + uy * 25
+  const px = -uy, py = ux
+  return `<g>
+    <line x1="${x1}" y1="${y1}" x2="${ex}" y2="${ey}" stroke="url(#${sd})" stroke-width="22" stroke-linecap="round"/>
+    <line x1="${ex + px * 9}" y1="${ey + py * 9}" x2="${ex - px * 9}" y2="${ey - py * 9}" stroke="#000" stroke-width="1.5" opacity="0.35" stroke-linecap="round"/></g>`
+}
+function armUnit(x1, y1, x2, y2, hx, hy, ag, sd) {
+  return `<g>${limb(x1, y1, x2, y2, ag)}${hand(hx, hy, ag)}${sleeve(x1, y1, x2, y2, sd)}</g>`
+}
+function arms(mood, ag, sd) {
   switch (mood) {
     case 'celebrating':
     case 'excited':
-      return `<g>${limb(68, 124, 38, 88, ag)}${hand(36, 84, ag)}${limb(132, 124, 162, 88, ag)}${hand(164, 84, ag)}</g>`
+      return `<g>${armUnit(68, 124, 38, 88, 36, 84, ag, sd)}${armUnit(132, 124, 162, 88, 164, 84, ag, sd)}</g>`
     case 'thinking':
-      return `<g>${limb(66, 126, 52, 170, ag)}${hand(51, 176, ag)}${limb(134, 126, 122, 102, ag)}${hand(120, 97, ag)}</g>`
+      return `<g>${armUnit(66, 126, 52, 170, 51, 176, ag, sd)}${armUnit(134, 126, 122, 102, 120, 97, ag, sd)}</g>`
     case 'surprised':
-      return `<g>${limb(68, 124, 70, 100, ag)}${hand(70, 95, ag)}${limb(132, 124, 130, 100, ag)}${hand(130, 95, ag)}</g>`
+      return `<g>${armUnit(68, 124, 70, 100, 70, 95, ag, sd)}${armUnit(132, 124, 130, 100, 130, 95, ag, sd)}</g>`
     case 'waving':
-      return `<g>${limb(66, 126, 52, 170, ag)}${hand(51, 176, ag)}${limb(132, 122, 160, 88, ag)}${hand(162, 83, ag)}</g>`
+      return `<g>${armUnit(66, 126, 52, 170, 51, 176, ag, sd)}${armUnit(132, 122, 160, 88, 162, 83, ag, sd)}</g>`
     case 'sad':
-      return `<g>${limb(64, 128, 58, 176, ag)}${hand(57, 182, ag)}${limb(136, 128, 142, 176, ag)}${hand(143, 182, ag)}</g>`
+      return `<g>${armUnit(64, 128, 58, 176, 57, 182, ag, sd)}${armUnit(136, 128, 142, 176, 143, 182, ag, sd)}</g>`
     default:
-      return `<g>${limb(64, 126, 50, 168, ag)}${hand(49, 174, ag)}${limb(136, 126, 150, 168, ag)}${hand(151, 174, ag)}</g>`
+      return `<g>${armUnit(64, 126, 50, 168, 49, 174, ag, sd)}${armUnit(136, 126, 150, 168, 151, 174, ag, sd)}</g>`
   }
 }
 
@@ -130,7 +143,6 @@ export function flexSVG(mood, uid = '0') {
     <filter id="${g}" x="-60%" y="-60%" width="220%" height="220%"><feDropShadow dx="0" dy="0" stdDeviation="3" flood-color="${EYE_CORE}" flood-opacity="0.8"/></filter>
     <filter id="${an}" x="-150%" y="-150%" width="400%" height="400%"><feDropShadow dx="0" dy="0" stdDeviation="3" flood-color="${SKY}" flood-opacity="0.9"/></filter>
   </defs>
-  ${arms(mood, ag)}
 
   <rect x="77" y="196" width="17" height="18" rx="7" fill="url(#${sd})"/>
   <rect x="106" y="196" width="17" height="18" rx="7" fill="url(#${sd})"/>
@@ -140,11 +152,6 @@ export function flexSVG(mood, uid = '0') {
   <rect x="104" y="221" width="32" height="6" rx="3" fill="${SOLE}"/>
   <path d="M75 215 l11 3" stroke="${SKY}" stroke-width="2" stroke-linecap="round"/>
   <path d="M111 215 l11 3" stroke="${SKY}" stroke-width="2" stroke-linecap="round"/>
-
-  <path d="M60 120 Q40 124 40 145 Q40 157 55 156 L67 149 Q60 132 71 122 Z" fill="url(#${sd})"/>
-  <path d="M140 120 Q160 124 160 145 Q160 157 145 156 L133 149 Q140 132 129 122 Z" fill="url(#${sd})"/>
-  <path d="M44 150 Q50 156 60 152" stroke="#000" stroke-width="1.5" fill="none" opacity="0.4"/>
-  <path d="M156 150 Q150 156 140 152" stroke="#000" stroke-width="1.5" fill="none" opacity="0.4"/>
 
   <path d="M58 124 Q66 116 78 115 Q100 112 122 115 Q134 116 142 124 L149 190 Q149 208 130 208 L70 208 Q51 208 51 190 Z" fill="url(#${sg})" stroke="#05070C" stroke-width="1"/>
   <path d="M58 124 L51 190 Q51 201 59 206 L63 150 Z" fill="#000" opacity="0.2"/>
@@ -157,15 +164,16 @@ export function flexSVG(mood, uid = '0') {
   <path d="M85 116 L100 140" stroke="${COLLAR}" stroke-width="2.5" fill="none" stroke-linecap="round"/>
   <path d="M115 116 L100 140" stroke="${COLLAR}" stroke-width="2.5" fill="none" stroke-linecap="round"/>
 
-  <path d="M62 168 h22 v16 q0 3 -3 3 h-16 q-3 0 -3 -3 Z" fill="none" stroke="${COLLAR}" stroke-width="1.5"/>
-  <line x1="62" y1="172" x2="84" y2="172" stroke="${COLLAR}" stroke-width="1.5"/>
+  <path d="M106 158 h38 v20 q0 3 -3 3 h-32 q-3 0 -3 -3 Z" fill="url(#${sg})" stroke="${COLLAR}" stroke-width="1.4"/>
+  <line x1="106" y1="163" x2="144" y2="163" stroke="${COLLAR}" stroke-width="1.4"/>
 
   <path d="M82 118 Q72 150 96 170" stroke="${STETHO}" stroke-width="4.5" fill="none" stroke-linecap="round"/>
   <path d="M118 118 Q128 150 104 170" stroke="${STETHO}" stroke-width="4.5" fill="none" stroke-linecap="round"/>
   <circle cx="100" cy="174" r="7" fill="${STETHO}"/><circle cx="100" cy="174" r="3.5" fill="#0A1525"/>
 
-  <rect x="108" y="150" width="30" height="16" rx="5" fill="#0A1525" stroke="${SKY}" stroke-width="1.4"/>
-  <text x="123" y="162" text-anchor="middle" font-size="10" font-weight="bold" fill="${SKY}" font-family="sans-serif">DPT</text>
+  <text x="128" y="176" text-anchor="middle" font-size="7.5" font-weight="bold" fill="${SKY}" font-family="sans-serif">DPT Flex</text>
+
+  ${arms(mood, ag, sd)}
 
   <g ${tilt}>
     <line x1="100" y1="28" x2="100" y2="15" stroke="#7C8BA3" stroke-width="2.5" stroke-linecap="round"/>

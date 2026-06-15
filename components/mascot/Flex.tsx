@@ -276,68 +276,96 @@ function Hand({ cx, cy, gradId }: { cx: number; cy: number; gradId: string }) {
   )
 }
 
-function Arms({ mood, gradId }: { mood: FlexMood; gradId: string }) {
+/* short scrub sleeve that rides the shoulder end of an arm, so it always
+   follows the limb direction (incl. the animated wave) */
+function SleeveCap({ x1, y1, x2, y2, scrubId }: { x1: number; y1: number; x2: number; y2: number; scrubId: string }) {
+  const dx = x2 - x1
+  const dy = y2 - y1
+  const len = Math.hypot(dx, dy) || 1
+  const ux = dx / len
+  const uy = dy / len
+  const ex = x1 + ux * 25
+  const ey = y1 + uy * 25
+  const px = -uy
+  const py = ux
+  return (
+    <g>
+      <line x1={x1} y1={y1} x2={ex} y2={ey} stroke={`url(#${scrubId})`} strokeWidth={22} strokeLinecap="round" />
+      <line x1={ex + px * 9} y1={ey + py * 9} x2={ex - px * 9} y2={ey - py * 9} stroke="#000" strokeWidth={1.5} opacity={0.35} strokeLinecap="round" />
+    </g>
+  )
+}
+
+interface ArmSpec {
+  x1: number
+  y1: number
+  x2: number
+  y2: number
+  hx: number
+  hy: number
+}
+
+function ArmUnit({ x1, y1, x2, y2, hx, hy, gradId, scrubId }: ArmSpec & { gradId: string; scrubId: string }) {
+  return (
+    <g>
+      <Limb x1={x1} y1={y1} x2={x2} y2={y2} gradId={gradId} />
+      <Hand cx={hx} cy={hy} gradId={gradId} />
+      <SleeveCap x1={x1} y1={y1} x2={x2} y2={y2} scrubId={scrubId} />
+    </g>
+  )
+}
+
+function Arms({ mood, gradId, scrubId }: { mood: FlexMood; gradId: string; scrubId: string }) {
+  const A = (s: ArmSpec) => <ArmUnit {...s} gradId={gradId} scrubId={scrubId} />
   switch (mood) {
     case 'celebrating':
     case 'excited':
       return (
         <g>
-          <Limb x1={68} y1={124} x2={38} y2={88} gradId={gradId} />
-          <Hand cx={36} cy={84} gradId={gradId} />
-          <Limb x1={132} y1={124} x2={162} y2={88} gradId={gradId} />
-          <Hand cx={164} cy={84} gradId={gradId} />
+          {A({ x1: 68, y1: 124, x2: 38, y2: 88, hx: 36, hy: 84 })}
+          {A({ x1: 132, y1: 124, x2: 162, y2: 88, hx: 164, hy: 84 })}
         </g>
       )
     case 'thinking':
       return (
         <g>
-          <Limb x1={66} y1={126} x2={52} y2={170} gradId={gradId} />
-          <Hand cx={51} cy={176} gradId={gradId} />
-          <Limb x1={134} y1={126} x2={122} y2={102} gradId={gradId} />
-          <Hand cx={120} cy={97} gradId={gradId} />
+          {A({ x1: 66, y1: 126, x2: 52, y2: 170, hx: 51, hy: 176 })}
+          {A({ x1: 134, y1: 126, x2: 122, y2: 102, hx: 120, hy: 97 })}
         </g>
       )
     case 'waving':
       return (
         <g>
-          <Limb x1={66} y1={126} x2={52} y2={170} gradId={gradId} />
-          <Hand cx={51} cy={176} gradId={gradId} />
+          {A({ x1: 66, y1: 126, x2: 52, y2: 170, hx: 51, hy: 176 })}
           <motion.g
             animate={{ rotate: [0, 18, 0, 18, 0] }}
             transition={{ duration: 1.4, repeat: Infinity, ease: 'easeInOut' }}
             style={{ originX: '132px', originY: '122px' }}
           >
-            <Limb x1={132} y1={122} x2={160} y2={88} gradId={gradId} />
-            <Hand cx={162} cy={83} gradId={gradId} />
+            {A({ x1: 132, y1: 122, x2: 160, y2: 88, hx: 162, hy: 83 })}
           </motion.g>
         </g>
       )
     case 'surprised':
       return (
         <g>
-          <Limb x1={68} y1={124} x2={70} y2={100} gradId={gradId} />
-          <Hand cx={70} cy={95} gradId={gradId} />
-          <Limb x1={132} y1={124} x2={130} y2={100} gradId={gradId} />
-          <Hand cx={130} cy={95} gradId={gradId} />
+          {A({ x1: 68, y1: 124, x2: 70, y2: 100, hx: 70, hy: 95 })}
+          {A({ x1: 132, y1: 124, x2: 130, y2: 100, hx: 130, hy: 95 })}
         </g>
       )
     case 'sad':
       return (
         <g>
-          <Limb x1={64} y1={128} x2={58} y2={176} gradId={gradId} />
-          <Hand cx={57} cy={182} gradId={gradId} />
-          <Limb x1={136} y1={128} x2={142} y2={176} gradId={gradId} />
-          <Hand cx={143} cy={182} gradId={gradId} />
+          {A({ x1: 64, y1: 128, x2: 58, y2: 176, hx: 57, hy: 182 })}
+          {A({ x1: 136, y1: 128, x2: 142, y2: 176, hx: 143, hy: 182 })}
         </g>
       )
     case 'focused':
     default:
       return (
         <g>
-          <Limb x1={64} y1={126} x2={50} y2={168} gradId={gradId} />
-          <Hand cx={49} cy={174} gradId={gradId} />
-          <Limb x1={136} y1={126} x2={150} y2={168} gradId={gradId} />
-          <Hand cx={151} cy={174} gradId={gradId} />
+          {A({ x1: 64, y1: 126, x2: 50, y2: 168, hx: 49, hy: 174 })}
+          {A({ x1: 136, y1: 126, x2: 150, y2: 168, hx: 151, hy: 174 })}
         </g>
       )
   }
@@ -502,8 +530,6 @@ export default function Flex({
 
         <Extras mood={mood} />
 
-        <Arms mood={mood} gradId={armGradId} />
-
         {/* ===== legs (scrub pants) + sneakers ===== */}
         <rect x={77} y={196} width={17} height={18} rx={7} fill={`url(#${scrubDarkId})`} />
         <rect x={106} y={196} width={17} height={18} rx={7} fill={`url(#${scrubDarkId})`} />
@@ -515,13 +541,6 @@ export default function Flex({
           <path d="M75 215 l11 3" stroke={SKY} strokeWidth={2} strokeLinecap="round" />
           <path d="M111 215 l11 3" stroke={SKY} strokeWidth={2} strokeLinecap="round" />
         </g>
-
-        {/* ===== short sleeves (over shoulders) ===== */}
-        <path d="M60 120 Q40 124 40 145 Q40 157 55 156 L67 149 Q60 132 71 122 Z" fill={`url(#${scrubDarkId})`} />
-        <path d="M140 120 Q160 124 160 145 Q160 157 145 156 L133 149 Q140 132 129 122 Z" fill={`url(#${scrubDarkId})`} />
-        {/* sleeve cuff hems */}
-        <path d="M44 150 Q50 156 60 152" stroke="#000" strokeWidth={1.5} fill="none" opacity={0.4} />
-        <path d="M156 150 Q150 156 140 152" stroke="#000" strokeWidth={1.5} fill="none" opacity={0.4} />
 
         {/* ===== torso: fitted scrub top ===== */}
         <path
@@ -544,21 +563,23 @@ export default function Flex({
         <path d="M85 116 L100 140" stroke={COLLAR} strokeWidth={2.5} fill="none" strokeLinecap="round" />
         <path d="M115 116 L100 140" stroke={COLLAR} strokeWidth={2.5} fill="none" strokeLinecap="round" />
 
-        {/* chest pocket (viewer-left) */}
-        <path d="M62 168 h22 v16 q0 3 -3 3 h-16 q-3 0 -3 -3 Z" fill="none" stroke={COLLAR} strokeWidth={1.5} />
-        <line x1={62} y1={172} x2={84} y2={172} stroke={COLLAR} strokeWidth={1.5} />
+        {/* chest pocket (viewer-right) */}
+        <path d="M106 158 h38 v20 q0 3 -3 3 h-32 q-3 0 -3 -3 Z" fill={`url(#${scrubGradId})`} stroke={COLLAR} strokeWidth={1.4} />
+        <line x1={106} y1={163} x2={144} y2={163} stroke={COLLAR} strokeWidth={1.4} />
 
-        {/* stethoscope draped over the neck */}
+        {/* stethoscope draped over the shirt */}
         <path d="M82 118 Q72 150 96 170" stroke={STETHO} strokeWidth={4.5} fill="none" strokeLinecap="round" />
         <path d="M118 118 Q128 150 104 170" stroke={STETHO} strokeWidth={4.5} fill="none" strokeLinecap="round" />
         <circle cx={100} cy={174} r={7} fill={STETHO} />
         <circle cx={100} cy={174} r={3.5} fill="#0A1525" />
 
-        {/* embroidered DPT badge (viewer-right chest) */}
-        <rect x={108} y={150} width={30} height={16} rx={5} fill="#0A1525" stroke={SKY} strokeWidth={1.4} />
-        <text x={123} y={162} textAnchor="middle" fontSize={10} fontWeight="bold" fill={SKY} fontFamily="sans-serif">
-          DPT
+        {/* embroidered name on the pocket (above the stethoscope so it stays legible) */}
+        <text x={128} y={176} textAnchor="middle" fontSize={7.5} fontWeight="bold" fill={SKY} fontFamily="sans-serif">
+          DPT Flex
         </text>
+
+        {/* arms last so the scrub sleeves sit on the shoulders and track the limbs */}
+        <Arms mood={mood} gradId={armGradId} scrubId={scrubDarkId} />
 
         {/* ===== head ===== */}
         <g transform={headTilt}>
